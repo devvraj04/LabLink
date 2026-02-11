@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import BloodFlowBackground from '../components/BloodFlowBackground';
 
 // Animated counter hook
 const useCounter = (end, duration = 2000) => {
@@ -176,21 +177,8 @@ const LandingPage = () => {
     <div className="landing-page min-h-screen overflow-hidden">
       {/* Animated Background Elements */}
       {/* Video Background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute w-full h-full object-cover"
-        >
-          <source src="/assets/Video_Animation_Aur_Website_Integration.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-teal-900/80 mix-blend-multiply" />
-        <div className="absolute inset-0 bg-gradient-to-t from-teal-900 via-teal-900/40 to-teal-900/60" />
-      </div>
+      {/* Interactive Blood Flow Background */}
+      <BloodFlowBackground />
 
       {/* Navigation */}
       <nav className={`relative z-50 px-6 py-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>

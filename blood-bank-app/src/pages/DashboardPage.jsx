@@ -18,13 +18,13 @@ const DashboardPage = () => {
     try {
       setLoading(true);
       setError('');
-      
+
       // Fetch comprehensive analytics
       const response = await analyticsAPI.getDashboard();
-      
+
       if (response.data.success) {
         const data = response.data.data;
-        
+
         // Convert inventory byBloodGroup array to object for easier rendering
         const byBloodGroup = {};
         if (data.inventory?.byBloodGroup) {
@@ -32,7 +32,7 @@ const DashboardPage = () => {
             byBloodGroup[item._id] = item.available || 0;
           });
         }
-        
+
         // Combine stats for dashboard display
         setStats({
           totalUnits: data.inventory?.total || 0,
@@ -75,7 +75,7 @@ const DashboardPage = () => {
           <div className="flex-1">
             <p className="font-semibold mb-1">Error Loading Dashboard</p>
             <p className="text-sm text-red-600">{error}</p>
-            <button 
+            <button
               onClick={fetchDashboardData}
               className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors duration-150 text-sm font-medium shadow-sm flex items-center gap-2"
             >
@@ -90,9 +90,9 @@ const DashboardPage = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h3 className="text-2xl font-bold text-zinc-900 mb-2">Overview</h3>
-        <p className="text-zinc-600">Welcome to the Blood Bank Management System Dashboard</p>
+      <div className="mb-8">
+        <h3 className="text-3xl font-extrabold text-teal-900 mb-2 tracking-tight">Overview</h3>
+        <p className="text-slate-600 font-medium">Welcome to your advanced Blood Bank Management System</p>
       </div>
 
       {stats ? (
@@ -162,25 +162,27 @@ const DashboardPage = () => {
           </div>
 
           {/* Blood Group Inventory Card */}
-          <div className="bg-white rounded-lg shadow-sm border border-zinc-200 p-6">
-            <h3 className="text-lg font-semibold text-zinc-900 mb-4">Blood Group Inventory</h3>
+          <div className="content-card p-6">
+            <h3 className="text-xl font-bold text-teal-900 mb-6 flex items-center gap-2">
+              <Droplets className="h-5 w-5 text-teal-600" />
+              Blood Group Inventory
+            </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {stats.byBloodGroup && typeof stats.byBloodGroup === 'object' && !Array.isArray(stats.byBloodGroup) ? (
                 Object.entries(stats.byBloodGroup).map(([bloodGroup, count]) => (
-                  <div 
-                    key={bloodGroup} 
-                    className={`p-4 rounded-lg border transition-all duration-150 ${
-                      count < 5 
-                        ? 'bg-red-50 border-red-200 shadow-sm' 
-                        : 'bg-emerald-50 border-emerald-200 shadow-sm'
-                    }`}
+                  <div
+                    key={bloodGroup}
+                    className={`p-4 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${count < 5
+                      ? 'bg-red-50/80 border-red-200 shadow-lg shadow-red-900/5'
+                      : 'bg-emerald-50/80 border-emerald-200 shadow-lg shadow-emerald-900/5'
+                      }`}
                   >
-                    <div className="text-2xl font-bold text-zinc-900">{bloodGroup}</div>
-                    <div className="text-sm text-zinc-600 mt-1">{count} units</div>
+                    <div className="text-3xl font-black text-slate-800">{bloodGroup}</div>
+                    <div className="text-sm text-slate-600 font-medium mt-1">{count} units</div>
                     {count < 5 && (
-                      <div className="flex items-center gap-1 text-xs text-red-700 mt-2 font-medium">
-                        <AlertTriangle className="h-3 w-3" />
-                        Low Stock!
+                      <div className="flex items-center gap-1.5 text-xs text-rose-600 mt-3 font-bold bg-white/60 py-1 px-2 rounded-full w-fit">
+                        <AlertTriangle className="h-3.5 w-3.5" />
+                        Low Stock
                       </div>
                     )}
                   </div>
@@ -195,61 +197,61 @@ const DashboardPage = () => {
           </div>
 
           {/* Quick Actions Card */}
-          <div className="bg-white rounded-lg shadow-sm border border-zinc-200 p-6">
-            <h3 className="text-lg font-semibold text-zinc-900 mb-4">Quick Actions</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-              <button 
+          <div className="content-card p-6">
+            <h3 className="text-xl font-bold text-teal-900 mb-6">Quick Actions</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <button
                 onClick={() => navigate('/inventory')}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-150 shadow-sm flex items-center justify-center gap-2"
+                className="btn-glow bg-teal-600 hover:bg-teal-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-teal-900/20 hover:scale-[1.02] flex items-center justify-center gap-2"
               >
                 <Plus className="h-5 w-5" />
                 <span>Add Blood Unit</span>
               </button>
-              <button 
+              <button
                 onClick={() => navigate('/donors')}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-150 shadow-sm flex items-center justify-center gap-2"
+                className="bg-emerald-600/90 backdrop-blur-sm hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-emerald-900/20 hover:scale-[1.02] flex items-center justify-center gap-2"
               >
                 <UserPlus className="h-5 w-5" />
                 <span>Register Donor</span>
               </button>
-              <button 
+              <button
                 onClick={() => navigate('/recipients')}
-                className="bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-150 shadow-sm flex items-center justify-center gap-2"
+                className="bg-purple-600/90 backdrop-blur-sm hover:bg-purple-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-purple-900/20 hover:scale-[1.02] flex items-center justify-center gap-2"
               >
                 <FileText className="h-5 w-5" />
                 <span>Manage Recipients</span>
               </button>
-              <button 
+              <button
                 onClick={() => navigate('/camps')}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-150 shadow-sm flex items-center justify-center gap-2"
+                className="bg-indigo-600/90 backdrop-blur-sm hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-indigo-900/20 hover:scale-[1.02] flex items-center justify-center gap-2"
               >
                 <Tent className="h-5 w-5" />
                 <span>Donation Camps</span>
               </button>
-              <button 
+              <button
                 onClick={() => navigate('/blood-requests')}
-                className="bg-pink-600 hover:bg-pink-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-150 shadow-sm flex items-center justify-center gap-2"
+                className="bg-pink-600/90 backdrop-blur-sm hover:bg-pink-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-pink-900/20 hover:scale-[1.02] flex items-center justify-center gap-2"
               >
                 <FileText className="h-5 w-5" />
                 <span>Blood Requests</span>
               </button>
-              <button 
+              <button
                 onClick={() => navigate('/emergencies')}
-                className="bg-red-600 hover:bg-red-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-150 shadow-sm flex items-center justify-center gap-2"
+                className="bg-rose-600 hover:bg-rose-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-rose-900/20 hover:scale-[1.02] flex items-center justify-center gap-2"
               >
                 <AlertTriangle className="h-5 w-5" />
                 <span>Emergencies</span>
               </button>
-              <button 
+              <button
                 onClick={() => navigate('/hospitals')}
-                className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-150 shadow-sm flex items-center justify-center gap-2"
+                className="bg-cyan-600/90 backdrop-blur-sm hover:bg-cyan-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-cyan-900/20 hover:scale-[1.02] flex items-center justify-center gap-2"
               >
                 <Building2 className="h-5 w-5" />
                 <span>Hospitals</span>
               </button>
-              <button 
+              <button
                 onClick={() => navigate('/analytics')}
-                className="bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-150 shadow-sm flex items-center justify-center gap-2"
+                className="bg-slate-700/90 backdrop-blur-sm hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-slate-900/20 hover:scale-[1.02] flex items-center justify-center gap-2"
               >
                 <Droplets className="h-5 w-5" />
                 <span>View Analytics</span>
@@ -259,15 +261,18 @@ const DashboardPage = () => {
 
           {/* Low Stock Alert */}
           {stats.lowStockGroups.length > 0 && (
-            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 shadow-sm">
-              <div className="flex gap-3">
-                <div className="flex-shrink-0">
-                  <AlertTriangle className="h-5 w-5 text-amber-600" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-amber-900">Low Stock Alert</h3>
-                  <div className="mt-1 text-sm text-amber-700">
-                    <p>The following blood groups are running low: <span className="font-semibold">{stats.lowStockGroups.join(', ')}</span></p>
+            <div className="glass-card border-l-4 border-l-amber-500 rounded-xl p-6 shadow-lg relative overflow-hidden">
+              <div className="absolute inset-0 bg-amber-500/5 z-0" />
+              <div className="relative z-10">
+                <div className="flex gap-3">
+                  <div className="flex-shrink-0">
+                    <AlertTriangle className="h-5 w-5 text-amber-600" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-sm font-semibold text-amber-900">Low Stock Alert</h3>
+                    <div className="mt-1 text-sm text-amber-800/80">
+                      <p>The following blood groups are running low: <span className="font-bold text-amber-900 bg-amber-100/50 px-2 py-0.5 rounded-md">{stats.lowStockGroups.join(', ')}</span></p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -279,8 +284,9 @@ const DashboardPage = () => {
           <Droplets className="mx-auto h-16 w-16 text-zinc-400" />
           <p className="mt-4 text-lg font-medium text-zinc-900">No statistics available</p>
         </div>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 };
 

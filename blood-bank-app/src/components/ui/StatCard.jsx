@@ -18,12 +18,12 @@ const StatCard = ({ title, value, detail, icon: Icon, iconColor = 'text-blue-600
     <div className={`glass-card bg-gradient-to-br ${gradientClass} rounded-2xl p-6 border border-white/20 dark:border-white/10 shadow-lg dark:shadow-xl hover:shadow-xl dark:hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group`}>
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <p className="text-zinc-700 dark:text-gray-300 text-sm font-semibold tracking-wide uppercase">{title}</p>
-          <p className="text-4xl font-black bg-gradient-to-r from-zinc-900 to-zinc-700 dark:from-white dark:to-gray-200 bg-clip-text text-transparent mt-3">{value}</p>
-          {detail && <p className="text-sm text-zinc-600 dark:text-gray-400 mt-2 font-medium">{detail}</p>}
+          <p className="text-zinc-600 dark:text-gray-400 text-xs font-bold tracking-widest uppercase letter-spacing">{title}</p>
+          <p className="text-5xl font-black text-zinc-900 dark:text-white mt-3 drop-shadow-sm">{value}</p>
+          {detail && <p className="text-sm text-zinc-600 dark:text-gray-400 mt-3 font-medium">{detail}</p>}
         </div>
         {Icon && (
-          <div className={`${iconColor} bg-white/30 dark:bg-white/5 backdrop-blur-md p-4 rounded-xl border border-white/20 dark:border-white/10 group-hover:scale-110 group-hover:bg-white/40 dark:group-hover:bg-white/10 transition-all duration-300`}>
+          <div className={`${iconColor} bg-white/40 dark:bg-white/10 backdrop-blur-md p-4 rounded-xl border border-white/40 dark:border-white/10 group-hover:scale-110 group-hover:bg-white/50 dark:group-hover:bg-white/15 transition-all duration-300`}>
             <Icon className="h-6 w-6" />
           </div>
         )}

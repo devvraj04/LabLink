@@ -27,7 +27,6 @@ const Layout = () => {
         return 'Hospital Network';
       case '/app/emergency':
         return 'Emergency SOS';
-
       case '/app/rewards':
         return 'Rewards';
       case '/app/camps':
@@ -56,10 +55,21 @@ const Layout = () => {
   };
 
   return (
-    <div className="flex h-screen app-background">
+    <div className="flex h-screen app-background overflow-hidden">
+      {/* Ambient glow blobs for depth */}
+      <div className="glow-blob glow-blob-teal" aria-hidden="true" />
+      <div className="glow-blob glow-blob-cyan" aria-hidden="true" />
+      <div className="glow-blob glow-blob-purple" aria-hidden="true" />
+
+      {/* Fixed glass sidebar */}
       <Sidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
-      <div className="flex-1 lg:ml-64 flex flex-col overflow-hidden">
+
+      {/* Main content area — shifts right for sidebar on desktop */}
+      <div className="flex-1 lg:ml-64 flex flex-col h-screen overflow-hidden relative z-10">
+        {/* Sticky glass navbar */}
         <Header title={getPageTitle()} toggleSidebar={toggleSidebar} />
+
+        {/* Scrollable content */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 relative z-0">
           <Outlet />
         </main>

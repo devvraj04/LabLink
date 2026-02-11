@@ -34,11 +34,20 @@ module.exports = {
       boxShadow: {
         'card': '0 10px 40px -10px rgba(0, 0, 0, 0.1)',
         'card-hover': '0 20px 60px -15px rgba(0, 0, 0, 0.15)',
+        'glass': '0 8px 32px rgba(0, 0, 0, 0.12)',
+        'glass-lg': '0 16px 48px rgba(0, 0, 0, 0.18)',
+        'glass-nav': '0 4px 24px rgba(0, 0, 0, 0.14)',
+        'glow-teal': '0 0 20px rgba(20, 184, 166, 0.35)',
+        'glow-active': '0 0 16px rgba(20, 184, 166, 0.4), inset 0 1px 0 rgba(255,255,255,0.1)',
       },
       borderRadius: {
         '2xl': '1rem',
         '3xl': '1.5rem',
         '4xl': '2rem',
+      },
+      backdropBlur: {
+        glass: '16px',
+        'glass-lg': '24px',
       },
       animation: {
         slideIn: 'slideIn 0.3s ease-out',
@@ -48,6 +57,7 @@ module.exports = {
         'gradient-shift': 'gradient-shift 15s ease infinite',
         'draw-circle': 'draw-circle 2s ease-out forwards',
         'gradient-text': 'gradient-text 4s ease infinite',
+        'sidebar-glow': 'sidebar-glow 4s ease-in-out infinite',
       },
       keyframes: {
         slideIn: {
@@ -77,6 +87,10 @@ module.exports = {
         'gradient-text': {
           '0%, 100%': { backgroundPosition: '0% 50%' },
           '50%': { backgroundPosition: '100% 50%' },
+        },
+        'sidebar-glow': {
+          '0%, 100%': { boxShadow: '0 0 20px rgba(20,184,166,0.15)' },
+          '50%': { boxShadow: '0 0 40px rgba(20,184,166,0.25)' },
         },
       },
       fontFamily: {

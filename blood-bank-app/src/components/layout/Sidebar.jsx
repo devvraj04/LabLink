@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Droplets, Users, Heart, Building2, MessageSquare, Package, X, AlertCircle, Tent, Map, BarChart3, Microscope, FlaskConical, UserPlus, ClipboardList, Activity } from 'lucide-react';
+import { NavLink, useLocation } from 'react-router-dom';
+import {
+  LayoutDashboard, Droplets, Users, Heart, Building2, MessageSquare,
+  Package, X, AlertCircle, Tent, Map, BarChart3, Microscope,
+  FlaskConical, UserPlus, Activity,
+} from 'lucide-react';
 import { adminHospitalsAPI } from '../../services/api';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const [pendingHospitalsCount, setPendingHospitalsCount] = useState(0);
+  const location = useLocation();
 
   // Determine if current user is a patient
   const getUserRole = () => {
@@ -22,7 +27,6 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const isPatient = userRole === 'patient';
 
   useEffect(() => {
-    // Only poll for pending hospitals when NOT a patient
     if (isPatient) return;
     fetchPendingHospitals();
     const interval = setInterval(fetchPendingHospitals, 30000);
@@ -73,63 +77,80 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
       {/* Mobile Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/40 backdrop-blur-sm z-20 lg:hidden"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-20 lg:hidden transition-opacity duration-300"
           onClick={toggleSidebar}
         />
       )}
 
-      {/* Sidebar */}
-      <div className={`
-        h-screen w-64 sidebar-glass text-white fixed left-0 top-0 overflow-y-auto shadow-2xl z-30 flex flex-col
-        transition-transform duration-300 ease-in-out
-        ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
-      `}>
-        <div className="p-5 border-b border-white/10 flex items-center justify-between">
+      {/* Glassmorphism Sidebar */}
+      <aside
+        className={`
+          fixed left-0 top-0 h-screen w-64 z-30 flex flex-col overflow-hidden
+          sidebar-glass text-white
+          rounded-r-2xl
+          transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)]
+          ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+        `}
+      >
+        {/* Brand */}
+        <div className="p-5 border-b border-white/10 flex items-center justify-between flex-shrink-0">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-white/20 backdrop-blur-lg rounded-xl flex items-center justify-center border border-white/20">
-              <Heart className="h-5 w-5 text-white" />
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-teal-400/30 to-cyan-400/20 border border-white/15 shadow-glow-teal">
+              <Heart className="h-5 w-5 text-teal-300" />
             </div>
-            <span className="text-lg font-semibold">{isPatient ? 'LabLink' : 'HealthTech'}</span>
+            <span className="text-lg font-semibold text-white/90 tracking-tight">
+              {isPatient ? 'LabLink' : 'HealthTech'}
+            </span>
           </div>
 
           {/* Close button for mobile */}
           <button
             onClick={toggleSidebar}
-            className="lg:hidden text-white/80 hover:text-white hover:bg-white/10 p-2 rounded-xl transition-colors"
+            className="lg:hidden text-white/60 hover:text-white hover:bg-white/10 p-2 rounded-xl transition-all duration-200"
+            aria-label="Close sidebar"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
         {isPatient && (
-          <div className="px-5 py-3 border-b border-white/10">
-            <p className="text-xs text-white/50">Patient Portal</p>
+          <div className="px-5 py-3 border-b border-white/10 flex-shrink-0">
+            <p className="text-[11px] font-medium uppercase tracking-widest text-teal-300/70">
+              Patient Portal
+            </p>
           </div>
         )}
 
-        <nav className="mt-2 px-3 space-y-1 flex-1 overflow-y-auto pb-4">
+        {/* Navigation */}
+        <nav className="mt-3 px-3 space-y-0.5 flex-1 overflow-y-auto pb-4 scrollbar-thin scrollbar-thumb-white/10">
           {navItems.map((item) => {
             const Icon = item.icon;
+            const isActive = location.pathname === item.path;
+
             return (
               <NavLink
                 key={item.path}
                 to={item.path}
                 onClick={() => {
-                  if (window.innerWidth < 1024) {
-                    toggleSidebar();
-                  }
+                  if (window.innerWidth < 1024) toggleSidebar();
                 }}
-                className={({ isActive }) =>
-                  `flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${isActive
-                    ? 'bg-white/20 text-white shadow-lg backdrop-blur-lg'
-                    : 'text-white/70 hover:text-white hover:bg-white/10'
-                  }`
-                }
+                className={`
+                  group flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium
+                  transition-all duration-200 ease-out relative
+                  ${isActive
+                    ? 'sidebar-active-glow text-white'
+                    : 'sidebar-item-hover text-white/60 hover:text-white/90'
+                  }
+                `}
               >
-                <Icon className="h-4 w-4 flex-shrink-0" />
-                <span className="flex-1">{item.name}</span>
+                <Icon
+                  className={`h-[18px] w-[18px] flex-shrink-0 transition-colors duration-200 ${
+                    isActive ? 'text-teal-300' : 'text-white/50 group-hover:text-white/80'
+                  }`}
+                />
+                <span className="flex-1 truncate">{item.name}</span>
                 {item.path === '/app/hospitals' && pendingHospitalsCount > 0 && (
-                  <span className="px-2 py-0.5 bg-yellow-500 text-white text-xs font-bold rounded-full animate-pulse">
+                  <span className="px-2 py-0.5 bg-amber-500/90 text-white text-[10px] font-bold rounded-full animate-pulse shadow-lg shadow-amber-500/30">
                     {pendingHospitalsCount}
                   </span>
                 )}
@@ -138,11 +159,12 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
           })}
         </nav>
 
-        <div className="p-5 border-t border-white/10">
-          <p className="text-xs text-white/50">© 2024 HealthTech</p>
-          <p className="text-xs text-white/30 mt-0.5">v2.0.0</p>
+        {/* Footer */}
+        <div className="p-5 border-t border-white/10 flex-shrink-0">
+          <p className="text-[11px] text-white/40">© 2025 HealthTech</p>
+          <p className="text-[10px] text-white/25 mt-0.5">v2.1.0</p>
         </div>
-      </div>
+      </aside>
     </>
   );
 };

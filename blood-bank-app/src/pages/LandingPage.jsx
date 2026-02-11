@@ -693,17 +693,17 @@ const LandingPage = () => {
               </div>
             </a>
 
-            {/* Abhishek */}
+            {/* Devraj */}
             <a
-              href="https://www.linkedin.com/in/abhishek-chaudhari-949002356"
+              href="https://www.linkedin.com/in/devrajsundrani/"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative w-64 p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-2"
             >
               <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-3xl font-bold text-white shadow-lg shadow-purple-500/30">
-                AC
+                DS
               </div>
-              <h3 className="text-xl font-bold text-white mb-1">Abhishek Chaudhari</h3>
+              <h3 className="text-xl font-bold text-white mb-1">Devraj Sundrani</h3>
               <p className="text-purple-200 text-sm mb-4">Full Stack Developer</p>
               <div className="flex items-center justify-center gap-2 text-white/60 group-hover:text-white transition-colors">
                 <span className="text-sm">View Profile</span>
@@ -714,27 +714,36 @@ const LandingPage = () => {
             </a>
 
             {/* Harsh */}
-            <div
-              className="group relative w-64 p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-2 cursor-default"
-            >
-              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-3xl font-bold text-white shadow-lg shadow-orange-500/30">
-                H
-              </div>
-              <h3 className="text-xl font-bold text-white mb-1">Harsh</h3>
-              <p className="text-orange-200 text-sm mb-4">Full Stack Developer</p>
-            </div>
-
-            {/* Deep */}
             <a
-              href="https://www.linkedin.com/in/deep-mehta-857a09304/"
+              href="https://www.linkedin.com/in/harshpatil13/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative w-64 p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-2"
+            >
+              <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center text-3xl font-bold text-white shadow-lg shadow-purple-500/30">
+                HP
+              </div>
+              <h3 className="text-xl font-bold text-white mb-1">Harsh Patil</h3>
+              <p className="text-purple-200 text-sm mb-4">Full Stack Developer</p>
+              <div className="flex items-center justify-center gap-2 text-white/60 group-hover:text-white transition-colors">
+                <span className="text-sm">View Profile</span>
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                </svg>
+              </div>
+            </a>
+
+            {/* Chinmay Karmalkar */}
+            <a
+              href="https://www.linkedin.com/in/chinmay-karmalkar-7b7b41390/"
               target="_blank"
               rel="noopener noreferrer"
               className="group relative w-64 p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 hover:-translate-y-2"
             >
               <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-3xl font-bold text-white shadow-lg shadow-blue-500/30">
-                D
+                CK
               </div>
-              <h3 className="text-xl font-bold text-white mb-1">Deep Mehta</h3>
+              <h3 className="text-xl font-bold text-white mb-1">Chinmay Karmalkar</h3>
               <p className="text-blue-200 text-sm mb-4">Full Stack Developer</p>
               <div className="flex items-center justify-center gap-2 text-white/60 group-hover:text-white transition-colors">
                 <span className="text-sm">View Profile</span>

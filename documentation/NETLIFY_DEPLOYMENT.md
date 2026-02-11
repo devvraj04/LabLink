@@ -7,7 +7,7 @@
 1. **Go to [Netlify](https://app.netlify.com/)**
 2. Click **"Add new site"** → **"Import an existing project"**
 3. Choose **GitHub** and authorize
-4. Select your **LabLink** repository
+4. Select your **Healthtech-mobile-app** repository
 5. Netlify will auto-detect `netlify.toml` configuration
 6. **Add Environment Variable**:
    - Click "Show advanced" → "New variable"

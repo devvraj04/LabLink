@@ -43,7 +43,7 @@ const LoginPage = () => {
         const result = await adminLogin(formData.email, formData.password);
 
         if (result.success) {
-          success('Login successful', 'Welcome back to LabLink');
+          success('Login successful', 'Welcome back to HealthTech');
           navigate('/app/dashboard');
         } else {
           setError(result.error || 'Login failed. Please try again.');
@@ -135,7 +135,7 @@ const LoginPage = () => {
               <Heart className="w-7 h-7 text-white" />
             </div>
             <h1 className="text-2xl font-bold text-gray-800 mb-1">Welcome Back</h1>
-            <p className="text-gray-500 text-sm">Sign in to continue to LabLink</p>
+            <p className="text-gray-500 text-sm">Sign in to continue to HealthTech</p>
           </div>
 
           {/* Login Type Tabs */}
@@ -199,7 +199,7 @@ const LoginPage = () => {
                     value={formData.email}
                     onChange={handleChange}
                     className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-200"
-                    placeholder={loginType === 'admin' ? 'admin@lablink.com' : loginType === 'hospital' ? 'hospital@lablink.com' : 'UHID or uhid@lablink.com'}
+                    placeholder={loginType === 'admin' ? 'admin@healthtech.com' : loginType === 'hospital' ? 'hospital@example.com' : 'UHID or uhid@lablink.com'}
                     required
                     disabled={loading}
                   />
@@ -279,7 +279,7 @@ const LoginPage = () => {
 
         {/* Footer Text */}
         <p className="text-center text-white/60 text-xs mt-6">
-          © 2026 LabLink. Secure Healthcare Platform.
+          © 2024 HealthTech. Secure Healthcare Platform.
         </p>
       </div>
     </div>

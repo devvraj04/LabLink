@@ -80,7 +80,7 @@ app.use('/api/patients', require('./routes/patient.routes'));
 app.get('/', (req, res) => {
   res.json({
     success: true,
-    message: 'Blood Bank Management System API',
+    message: 'LabLink API',
     version: '1.0.0',
     status: 'running',
     endpoints: {

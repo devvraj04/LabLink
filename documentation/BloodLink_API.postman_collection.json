@@ -1,9 +1,9 @@
 {
   "info": {
-    "name": "BloodLink API Collection",
-    "description": "Complete API collection for BloodLink Blood Bank Management System",
+    "name": "LabLink API Collection",
+    "description": "Complete API collection for LabLink Blood Bank & Lab Management System",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "bloodlink"
+    "_exporter_id": "lablink"
   },
   "auth": {
     "type": "bearer",

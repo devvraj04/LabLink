@@ -92,7 +92,7 @@ const DashboardPage = () => {
       {/* Header */}
       <div>
         <h3 className="text-2xl font-bold text-zinc-900 mb-2">Overview</h3>
-        <p className="text-zinc-600">Welcome to the Blood Bank Management System Dashboard</p>
+        <p className="text-zinc-600">Welcome to the LabLink Dashboard</p>
       </div>
 
       {stats ? (

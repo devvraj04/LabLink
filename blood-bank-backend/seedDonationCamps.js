@@ -14,11 +14,11 @@ const camps = [
       address: "123 Main Street, Downtown",
       city: "Mumbai"
     },
-    organizer: "BloodLink Foundation",
+    organizer: "LabLink Foundation",
     contactPerson: {
       name: "Rajesh Kumar",
       phone: "9876543210",
-      email: "rajesh@bloodlink.org"
+      email: "rajesh@lablink.org"
     },
     expectedDonors: 150,
     status: "completed",
@@ -224,7 +224,7 @@ const camps = [
       address: "Hospital Street, Medical City",
       city: "Lucknow"
     },
-    organizer: "WHO India & BloodLink",
+    organizer: "WHO India & LabLink",
     contactPerson: {
       name: "Dr. Anita Gupta",
       phone: "9876543220",
@@ -287,7 +287,7 @@ const camps = [
       address: "Education Street, Academic Zone",
       city: "Bangalore"
     },
-    organizer: "Education Department & BloodLink",
+    organizer: "Education Department & LabLink",
     contactPerson: {
       name: "Prof. Suresh Nair",
       phone: "9876543223",

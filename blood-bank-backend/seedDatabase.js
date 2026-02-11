@@ -458,11 +458,11 @@ const seedDatabase = async () => {
           city: "Mumbai",
           pincode: "400001"
         },
-        organizer: "BloodLink Foundation",
+        organizer: "LabLink Foundation",
         contactPerson: {
           name: "Rajesh Kumar",
           phone: "9876543210",
-          email: "rajesh@bloodlink.org"
+          email: "rajesh@lablink.org"
         },
         expectedDonors: 150,
         status: "completed",

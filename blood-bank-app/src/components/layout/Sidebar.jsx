@@ -99,7 +99,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
               <Heart className="h-5 w-5 text-teal-300" />
             </div>
             <span className="text-lg font-semibold text-white/90 tracking-tight">
-              {isPatient ? 'LabLink' : 'HealthTech'}
+              LabLink
             </span>
           </div>
 

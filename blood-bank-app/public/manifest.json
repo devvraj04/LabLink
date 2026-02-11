@@ -1,7 +1,7 @@
 {
   "short_name": "LabLink",
   "name": "LabLink - Advanced Lab Management System",
-  "description": "Complete blood bank management with emergency response, appointments, donor rewards, and analytics",
+  "description": "LabLink - Intelligent Blood Bank & Lab Management with emergency response, appointments, donor rewards, and analytics",
   "icons": [
     {
       "src": "favicon.ico",

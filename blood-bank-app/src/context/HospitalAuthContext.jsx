@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
+import React, { createContext, useState, useContext, useEffect, useCallback, useRef } from 'react';
 import { hospitalAuthAPI } from '../services/api';
 
 const HospitalAuthContext = createContext();
@@ -12,60 +12,79 @@ export const useHospitalAuth = () => {
 };
 
 export const HospitalAuthProvider = ({ children }) => {
-  const [hospital, setHospital] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState(localStorage.getItem('hospitalToken'));
-
-  useEffect(() => {
-    if (token) {
-      // Load hospital profile on mount
-      loadHospital();
-    } else {
-      setLoading(false);
-    }
-  }, [token]);
-
-  const loadHospital = async () => {
+  // Initialize hospital from localStorage to avoid unnecessary API call
+  const [hospital, setHospital] = useState(() => {
     try {
-      console.log('Loading hospital profile...');
+      const cached = localStorage.getItem('hospital');
+      return cached ? JSON.parse(cached) : null;
+    } catch {
+      return null;
+    }
+  });
+  const [loading, setLoading] = useState(() => {
+    // Only loading if we have a token but no cached hospital
+    const hasToken = !!localStorage.getItem('hospitalToken');
+    const hasCached = !!localStorage.getItem('hospital');
+    return hasToken && !hasCached;
+  });
+  const [token, setToken] = useState(localStorage.getItem('hospitalToken'));
+  const profileLoadedRef = useRef(false);
+
+  const loadHospital = useCallback(async () => {
+    // Prevent duplicate fetches
+    if (profileLoadedRef.current) return;
+    profileLoadedRef.current = true;
+
+    try {
       const response = await hospitalAuthAPI.getProfile();
-      console.log('Profile response:', response.data);
       if (response.data.success) {
         setHospital(response.data.data);
+        localStorage.setItem('hospital', JSON.stringify(response.data.data));
       }
     } catch (error) {
       console.error('Failed to load hospital profile:', error);
-      console.error('Error response:', error.response?.data);
-      // Only logout if it's an authentication error (401), not server errors (500)
       if (error.response?.status === 401) {
         logout();
       }
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      // If we already have cached hospital data, don't show loading
+      // but still refresh profile in background (once)
+      if (hospital && !profileLoadedRef.current) {
+        setLoading(false);
+        loadHospital(); // refresh in background, won't block UI
+      } else if (!hospital) {
+        setLoading(true);
+        loadHospital();
+      }
+    } else {
+      setLoading(false);
+      profileLoadedRef.current = false;
+    }
+  }, [token]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const login = async (credentials) => {
     try {
-      console.log('Attempting login with:', credentials.email);
       const response = await hospitalAuthAPI.login(credentials);
-      console.log('Login response:', response.data);
       if (response.data.success) {
         const { token: newToken, ...hospitalData } = response.data.data;
-        console.log('Setting token and hospital data:', { newToken, hospitalData });
-        setToken(newToken);
-        setHospital(hospitalData);
         localStorage.setItem('hospitalToken', newToken);
         localStorage.setItem('hospital', JSON.stringify(hospitalData));
+        setHospital(hospitalData);
+        setToken(newToken);
+        profileLoadedRef.current = true; // We already have the data, no need to fetch again
         return { success: true };
       }
       return { success: false, message: response.data.message };
     } catch (error) {
-      console.error('Login error:', error);
-      console.error('Error response:', error.response?.data);
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Login failed' 
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Login failed'
       };
     }
   };
@@ -74,19 +93,19 @@ export const HospitalAuthProvider = ({ children }) => {
     try {
       const response = await hospitalAuthAPI.register(hospitalData);
       if (response.data.success) {
-        // Auto-login after registration
-        const { token: newToken, ...hospital } = response.data.data;
-        setToken(newToken);
-        setHospital(hospital);
+        const { token: newToken, ...data } = response.data.data;
         localStorage.setItem('hospitalToken', newToken);
-        localStorage.setItem('hospital', JSON.stringify(hospital));
+        localStorage.setItem('hospital', JSON.stringify(data));
+        setHospital(data);
+        setToken(newToken);
+        profileLoadedRef.current = true;
         return { success: true, message: response.data.message };
       }
       return { success: false, message: response.data.message };
     } catch (error) {
-      return { 
-        success: false, 
-        message: error.response?.data?.message || 'Registration failed' 
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Registration failed'
       };
     }
   };
@@ -94,6 +113,7 @@ export const HospitalAuthProvider = ({ children }) => {
   const logout = () => {
     setHospital(null);
     setToken(null);
+    profileLoadedRef.current = false;
     localStorage.removeItem('hospitalToken');
     localStorage.removeItem('hospital');
   };

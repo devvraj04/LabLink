@@ -20,6 +20,12 @@ import HospitalRegisterPage from './pages/hospital/HospitalRegisterPage';
 import HospitalDashboard from './pages/hospital/HospitalDashboardNew';
 import HospitalRequestsPage from './pages/hospital/HospitalRequestsPage';
 import HospitalChatPage from './pages/hospital/HospitalChatPage';
+import HospitalInventoryPage from './pages/hospital/HospitalInventoryPage';
+import HospitalDonorsPage from './pages/hospital/HospitalDonorsPage';
+import HospitalRecipientsPage from './pages/hospital/HospitalRecipientsPage';
+import HospitalCampsPage from './pages/hospital/HospitalCampsPage';
+import HospitalSOSPage from './pages/hospital/HospitalSOSPage';
+import HospitalLabTechnicianPage from './pages/hospital/HospitalLabTechnicianPage';
 
 // Admin Pages
 import AdminChatPage from './pages/AdminChatPage';
@@ -73,6 +79,12 @@ function App() {
                 <Route index element={<Navigate to="/hospital/dashboard" replace />} />
                 <Route path="dashboard" element={<HospitalDashboard />} />
                 <Route path="requests" element={<HospitalRequestsPage />} />
+                <Route path="inventory" element={<HospitalInventoryPage />} />
+                <Route path="donors" element={<HospitalDonorsPage />} />
+                <Route path="recipients" element={<HospitalRecipientsPage />} />
+                <Route path="camps" element={<HospitalCampsPage />} />
+                <Route path="lab-technician" element={<HospitalLabTechnicianPage />} />
+                <Route path="sos" element={<HospitalSOSPage />} />
                 <Route path="chat" element={<HospitalChatPage />} />
               </Route>
 

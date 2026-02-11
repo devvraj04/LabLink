@@ -11,6 +11,12 @@ export const ThemeProvider = ({ children }) => {
 
     useEffect(() => {
         localStorage.setItem('lablink-darkmode', darkMode);
+        // Apply dark-mode class to document root
+        if (darkMode) {
+            document.documentElement.classList.add('dark-mode');
+        } else {
+            document.documentElement.classList.remove('dark-mode');
+        }
     }, [darkMode]);
 
     const toggleTheme = () => {

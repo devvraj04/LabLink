@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Barcode from 'react-barcode';
+import { Html5Qrcode } from 'html5-qrcode';
 import { labAPI } from '../services/labService';
 
 export default function LabTechnicianPage() {
@@ -12,7 +13,10 @@ export default function LabTechnicianPage() {
     const [statusFilter, setStatusFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [toast, setToast] = useState(null);
-    const searchInputRef = React.useRef(null);
+    const searchInputRef = useRef(null);
+    const [showScanner, setShowScanner] = useState(false);
+    const html5QrCodeRef = useRef(null);
+    const fileInputRef = useRef(null);
 
     // Modals
     const [barcodeModal, setBarcodeModal] = useState(null);
@@ -20,10 +24,66 @@ export default function LabTechnicianPage() {
     const [resultForm, setResultForm] = useState({});
     const [resultLoading, setResultLoading] = useState(false);
     const [reportViewModal, setReportViewModal] = useState(null);
+    const [editingOrder, setEditingOrder] = useState(null); // Track if editing existing result
 
     const showToast = (title, message, type = 'success') => {
         setToast({ title, message, type });
         setTimeout(() => setToast(null), 3000);
+    };
+
+    // Barcode scanner functions
+    const startScanner = () => {
+        setShowScanner(true);
+        setTimeout(() => {
+            const scannerId = 'barcode-scanner-region';
+            const el = document.getElementById(scannerId);
+            if (!el) return;
+            const html5QrCode = new Html5Qrcode(scannerId);
+            html5QrCodeRef.current = html5QrCode;
+            html5QrCode.start(
+                { facingMode: 'environment' },
+                { fps: 10, qrbox: { width: 300, height: 150 }, formatsToSupport: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
+                (decodedText) => {
+                    setSearchQuery(decodedText);
+                    showToast('Scanned!', `Barcode: ${decodedText}`);
+                    stopScanner();
+                },
+                () => { }
+            ).catch((err) => {
+                console.error('Scanner start error:', err);
+                showToast('Camera Error', 'Could not access camera. Check permissions.', 'error');
+                setShowScanner(false);
+            });
+        }, 300);
+    };
+
+    const stopScanner = () => {
+        if (html5QrCodeRef.current) {
+            html5QrCodeRef.current.stop().then(() => {
+                html5QrCodeRef.current.clear();
+                html5QrCodeRef.current = null;
+            }).catch(() => { });
+        }
+        setShowScanner(false);
+    };
+
+    const handleFileUpload = async (e) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const file = e.target.files[0];
+            try {
+                // We need an element for Html5Qrcode instance, we can use a hidden one
+                const html5QrCode = new Html5Qrcode("barcode-scanner-hidden");
+                const decodedText = await html5QrCode.scanFile(file, true);
+                setSearchQuery(decodedText);
+                showToast('Scanned!', `Barcode from image: ${decodedText}`);
+            } catch (err) {
+                console.error('File scan error:', err);
+                showToast('Error', 'Could not scan barcode from image. Ensure image is clear.', 'error');
+            } finally {
+                // Reset input
+                if (fileInputRef.current) fileInputRef.current.value = '';
+            }
+        }
     };
 
     // Seed data on first load
@@ -32,7 +92,9 @@ export default function LabTechnicianPage() {
     const fetchRequests = useCallback(async () => {
         setLoading(true);
         try {
-            const res = await labAPI.getTechnicianRequests({ status: statusFilter });
+            const params = { status: statusFilter };
+            if (searchQuery && searchQuery.trim()) params.search = searchQuery.trim();
+            const res = await labAPI.getTechnicianRequests(params);
             setRequests(res.data.data || []);
             setStats(res.data.stats || {});
         } catch (err) {
@@ -40,7 +102,7 @@ export default function LabTechnicianPage() {
         } finally {
             setLoading(false);
         }
-    }, [statusFilter]);
+    }, [statusFilter, searchQuery]);
 
     const fetchInventory = useCallback(async () => {
         try {
@@ -63,6 +125,14 @@ export default function LabTechnicianPage() {
     useEffect(() => { fetchRequests(); }, [fetchRequests]);
     useEffect(() => { fetchInventory(); }, [fetchInventory]);
     useEffect(() => { fetchPayments(); }, [fetchPayments]);
+
+    // Debounced search: refetch requests when searchQuery changes
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            fetchRequests();
+        }, 400);
+        return () => clearTimeout(timer);
+    }, [searchQuery]); // eslint-disable-line react-hooks/exhaustive-deps
 
     // Approve order
     const approveOrder = async (orderId) => {
@@ -87,7 +157,7 @@ export default function LabTechnicianPage() {
         }
     };
 
-    // Open result entry modal
+    // Open result entry modal (new or edit)
     const openResultEntry = (order) => {
         const test = order.LabTest || order.testId;
         const initial = {};
@@ -95,20 +165,43 @@ export default function LabTechnicianPage() {
             test.resultFields.forEach((f) => { initial[f.fieldName] = ''; });
         }
         setResultForm(initial);
+        setEditingOrder(null);
         setResultModal(order);
     };
 
-    // Submit test result
+    // Open result entry modal pre-filled for editing
+    const openEditResult = (order) => {
+        const test = order.LabTest || order.testId;
+        const initial = {};
+        if (test?.resultFields) {
+            test.resultFields.forEach((f) => {
+                initial[f.fieldName] = order.resultData?.[f.fieldName] ?? '';
+            });
+        }
+        setResultForm(initial);
+        setEditingOrder(order);
+        setResultModal(order);
+    };
+
+    // Submit test result (new or update)
     const handleSubmitResult = async () => {
         if (!resultModal) return;
         setResultLoading(true);
         try {
-            const res = await labAPI.submitResult({
-                orderId: resultModal._id,
-                resultData: resultForm,
-            });
-            showToast('Result Saved', res.data.message);
+            let res;
+            if (editingOrder) {
+                // Update existing result
+                res = await labAPI.updateResult(resultModal._id, { resultData: resultForm });
+            } else {
+                // Submit new result
+                res = await labAPI.submitResult({
+                    orderId: resultModal._id,
+                    resultData: resultForm,
+                });
+            }
+            showToast(editingOrder ? 'Result Updated' : 'Result Saved', res.data.message);
             setResultModal(null);
+            setEditingOrder(null);
             fetchRequests();
         } catch (err) {
             showToast('Error', err.response?.data?.error || 'Failed', 'error');
@@ -146,6 +239,16 @@ export default function LabTechnicianPage() {
 
     return (
         <div className="space-y-6 animate-fade-in pb-24">
+            {/* Hidden scanner element for file upload */}
+            <div id="barcode-scanner-hidden" className="hidden"></div>
+            <input
+                type="file"
+                accept="image/*"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleFileUpload}
+            />
+
             {/* Toast */}
             {toast && (
                 <div className={`fixed top-4 right-4 z-50 p-4 rounded-xl shadow-2xl text-white text-sm font-medium transition-all duration-300 ${toast.type === 'error' ? 'bg-red-500' : 'bg-teal-500'}`}>
@@ -203,25 +306,41 @@ export default function LabTechnicianPage() {
                                         }`}>{s === 'all' ? 'All' : s.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</button>
                             ))}
                         </div>
-                        <div className="relative flex-1 max-w-md">
-                            <input
-                                ref={searchInputRef}
-                                type="text"
-                                placeholder="🔍 Search patient, test, or scan barcode..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-4 pr-12 py-2 rounded-xl border border-gray-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition-all"
-                            />
-                            <button
-                                onClick={() => {
-                                    setSearchQuery('');
-                                    searchInputRef.current?.focus();
-                                }}
-                                className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-gray-400 hover:text-teal-600 transition-colors"
-                                title="Clear & Focus for Scan"
-                            >
-                                📷
-                            </button>
+                        <div className="flex gap-2 flex-1 max-w-lg">
+                            <div className="relative flex-1">
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none">🔍</span>
+                                <input
+                                    ref={searchInputRef}
+                                    type="text"
+                                    placeholder="Search patient, test, barcode..."
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    className="w-full pl-10 pr-10 py-2.5 rounded-xl border border-gray-200 focus:border-teal-500 focus:ring-2 focus:ring-teal-200 transition-all text-sm"
+                                />
+                                {searchQuery && (
+                                    <button
+                                        onClick={() => { setSearchQuery(''); searchInputRef.current?.focus(); }}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors text-sm"
+                                        title="Clear search"
+                                    >✕</button>
+                                )}
+                            </div>
+                            <div className="flex gap-2">
+                                <button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="px-4 py-2.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-700 text-sm font-medium hover:bg-teal-100 transition-colors flex items-center gap-1.5 whitespace-nowrap"
+                                    title="Upload barcode image"
+                                >
+                                    🖼️ Upload
+                                </button>
+                                <button
+                                    onClick={startScanner}
+                                    className="px-4 py-2.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 text-sm font-medium hover:bg-indigo-100 transition-colors flex items-center gap-1.5 whitespace-nowrap"
+                                    title="Open camera to scan barcode"
+                                >
+                                    📷 Scan
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -237,18 +356,7 @@ export default function LabTechnicianPage() {
                         </div>
                     ) : (
                         <div className="space-y-3">
-                            {requests.filter(req => {
-                                if (!searchQuery) return true;
-                                const q = searchQuery.toLowerCase();
-                                const test = req.LabTest || req.testId;
-                                return (
-                                    (req.patientName || '').toLowerCase().includes(q) ||
-                                    (req.Patient?.name || '').toLowerCase().includes(q) ||
-                                    (test?.name || '').toLowerCase().includes(q) ||
-                                    (req.barcode || '').toLowerCase().includes(q) ||
-                                    (req.Patient?.uhid || '').toLowerCase().includes(q)
-                                );
-                            }).map((order) => {
+                            {requests.map((order) => {
                                 const test = order.LabTest || order.testId;
                                 return (
                                     <div key={order._id} className="glass-card-mini p-4">
@@ -306,10 +414,16 @@ export default function LabTechnicianPage() {
                                                     </button>
                                                 )}
                                                 {order.status === 'completed' && order.resultData && (
-                                                    <button onClick={() => setReportViewModal(order)}
-                                                        className="px-3 py-1.5 rounded-lg bg-green-500 text-white text-sm font-medium hover:bg-green-600 transition-colors">
-                                                        📄 View Report
-                                                    </button>
+                                                    <>
+                                                        <button onClick={() => setReportViewModal(order)}
+                                                            className="px-3 py-1.5 rounded-lg bg-green-500 text-white text-sm font-medium hover:bg-green-600 transition-colors">
+                                                            📄 View Report
+                                                        </button>
+                                                        <button onClick={() => openEditResult(order)}
+                                                            className="px-3 py-1.5 rounded-lg bg-yellow-500 text-white text-sm font-medium hover:bg-yellow-600 transition-colors">
+                                                            ✏️ Edit Result
+                                                        </button>
+                                                    </>
                                                 )}
                                                 {/* Payment */}
                                                 {!order.isPaid && order.status !== 'cancelled' && (
@@ -525,7 +639,7 @@ export default function LabTechnicianPage() {
                     <div className="bg-white rounded-2xl max-w-2xl w-full p-6 max-h-[90vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
                         <div className="flex items-center justify-between mb-6">
                             <div>
-                                <h2 className="text-lg font-bold text-gray-800">📝 Enter Results</h2>
+                                <h2 className="text-lg font-bold text-gray-800">{editingOrder ? '✏️ Edit Results' : '📝 Enter Results'}</h2>
                                 <p className="text-sm text-gray-400">
                                     {(resultModal.LabTest || resultModal.testId)?.name} — {resultModal.patientName}
                                 </p>
@@ -597,7 +711,7 @@ export default function LabTechnicianPage() {
                         <div className="flex gap-3 mt-6">
                             <button onClick={handleSubmitResult} disabled={resultLoading}
                                 className="flex-1 py-3 rounded-xl bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-semibold hover:shadow-lg transition-all disabled:opacity-50">
-                                {resultLoading ? '⏳ Submitting...' : '✅ Submit Results'}
+                                {resultLoading ? '⏳ Submitting...' : editingOrder ? '✅ Update Results' : '✅ Submit Results'}
                             </button>
                             <button onClick={() => setResultModal(null)}
                                 className="px-6 py-3 rounded-xl border text-gray-600 hover:bg-gray-50 transition-colors">Cancel</button>

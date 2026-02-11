@@ -18,6 +18,7 @@ router.get('/technician/requests', labController.getTechnicianRequests);
 router.put('/technician/approve/:orderId', labController.approveOrder);
 router.post('/technician/barcode', labController.generateBarcode);
 router.post('/technician/results', labController.submitResult);
+router.put('/technician/results/:orderId', labController.updateResult);
 
 // ===================== INVENTORY =====================
 router.get('/inventory', labController.getInventory);

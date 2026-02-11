@@ -175,19 +175,21 @@ const LandingPage = () => {
   return (
     <div className="landing-page min-h-screen overflow-hidden">
       {/* Animated Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute top-40 right-20 w-96 h-96 bg-cyan-300/20 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-teal-300/15 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
-        <div className="absolute -bottom-20 right-10 w-64 h-64 bg-emerald-300/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
-
-        {/* Abstract medical shapes */}
-        <svg className="absolute top-1/4 right-1/4 w-32 h-32 text-white/10 animate-spin-slow" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" strokeWidth="2" strokeDasharray="10 5" />
-        </svg>
-        <svg className="absolute bottom-1/3 left-1/4 w-24 h-24 text-white/10 animate-float" viewBox="0 0 100 100">
-          <path d="M50 10 L90 50 L50 90 L10 50 Z" fill="none" stroke="currentColor" strokeWidth="2" />
-        </svg>
+      {/* Video Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute w-full h-full object-cover"
+        >
+          <source src="/assets/Video_Animation_Aur_Website_Integration.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        {/* Overlay for better text readability */}
+        <div className="absolute inset-0 bg-teal-900/80 mix-blend-multiply" />
+        <div className="absolute inset-0 bg-gradient-to-t from-teal-900 via-teal-900/40 to-teal-900/60" />
       </div>
 
       {/* Navigation */}

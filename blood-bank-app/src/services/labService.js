@@ -18,6 +18,7 @@ export const labAPI = {
     approveOrder: (orderId) => API.put(`/lab/technician/approve/${orderId}`),
     generateBarcode: (data) => API.post('/lab/technician/barcode', data),
     submitResult: (data) => API.post('/lab/technician/results', data),
+    updateResult: (orderId, data) => API.put(`/lab/technician/results/${orderId}`, data),
 
     // Inventory
     getInventory: () => API.get('/lab/inventory'),

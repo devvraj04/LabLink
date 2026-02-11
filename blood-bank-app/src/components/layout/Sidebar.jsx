@@ -139,7 +139,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         </nav>
 
         <div className="p-5 border-t border-white/10">
-          <p className="text-xs text-white/50">© 2024 HealthTech</p>
+          <p className="text-xs text-white/50">© 2026 LabLink</p>
           <p className="text-xs text-white/30 mt-0.5">v2.0.0</p>
         </div>
       </div>

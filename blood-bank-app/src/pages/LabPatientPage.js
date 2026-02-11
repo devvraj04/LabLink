@@ -451,6 +451,17 @@ export default function LabPatientPage() {
                                             </button>
                                         </div>
                                     )}
+                                    {order.paymentRequired && (
+                                        <div className="pt-3 border-t border-gray-100">
+                                            <div className="w-full py-3 rounded-lg bg-amber-50 border border-amber-200 text-center">
+                                                <div className="flex items-center justify-center gap-2 text-amber-700 font-medium text-sm">
+                                                    <span>🔒</span>
+                                                    <span>Payment required to view results</span>
+                                                </div>
+                                                <p className="text-xs text-amber-500 mt-1">Please complete payment at the lab counter to access your report</p>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             );
                         })

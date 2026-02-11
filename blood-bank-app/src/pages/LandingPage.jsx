@@ -195,11 +195,14 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-lg flex items-center justify-center border border-white/20 shadow-lg">
-              <svg className="w-7 h-7 text-white" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 2C12 2 4 8.5 4 13.5C4 17.64 7.58 21 12 21C16.42 21 20 17.64 20 13.5C20 8.5 12 2 12 2ZM12 19C8.69 19 6 16.54 6 13.5C6 10.5 9 6.5 12 4C15 6.5 18 10.5 18 13.5C18 16.54 15.31 19 12 19ZM12 16C10.34 16 9 14.66 9 13C9 11.34 10.34 10 12 10C13.66 10 15 11.34 15 13C15 14.66 13.66 16 12 16Z" />
+              <svg className="w-7 h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M5 14.5l-.94.94a1.5 1.5 0 000 2.12l.88.88a1.5 1.5 0 001.06.44H18a1.5 1.5 0 001.06-.44l.88-.88a1.5 1.5 0 000-2.12L19 14.5M5 14.5h14" />
+                <circle cx="10" cy="17" r="0.75" fill="currentColor" />
+                <circle cx="14" cy="16.5" r="0.75" fill="currentColor" />
+                <circle cx="12" cy="18" r="0.75" fill="currentColor" />
               </svg>
             </div>
-            <span className="text-2xl font-bold text-white tracking-tight">BloodLink</span>
+            <span className="text-2xl font-bold text-white tracking-tight">LabLink</span>
           </div>
 
           <div className="hidden md:flex items-center gap-8">
@@ -237,9 +240,9 @@ const LandingPage = () => {
               </div>
 
               <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                Smart Blood Bank{' '}
+                Advanced Lab{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-white to-teal-200 animate-gradient-text">
-                  Management
+                  Management System
                 </span>
               </h1>
 
@@ -754,11 +757,13 @@ const LandingPage = () => {
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-lg flex items-center justify-center border border-white/20">
-                  <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2C12 2 4 8.5 4 13.5C4 17.64 7.58 21 12 21C16.42 21 20 17.64 20 13.5C20 8.5 12 2 12 2Z" />
+                  <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M5 14.5l-.94.94a1.5 1.5 0 000 2.12l.88.88a1.5 1.5 0 001.06.44H18a1.5 1.5 0 001.06-.44l.88-.88a1.5 1.5 0 000-2.12L19 14.5M5 14.5h14" />
+                    <circle cx="10" cy="17" r="0.75" fill="currentColor" />
+                    <circle cx="14" cy="16.5" r="0.75" fill="currentColor" />
                   </svg>
                 </div>
-                <span className="text-xl font-bold text-white">BloodLink</span>
+                <span className="text-xl font-bold text-white">LabLink</span>
               </div>
               <p className="text-white/60 max-w-sm leading-relaxed">
                 Empowering blood banks with smart management solutions.
@@ -789,7 +794,7 @@ const LandingPage = () => {
 
           <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-white/40 text-sm">
-              © 2024 BloodLink. Built for Healthcare Innovation Hackathon.
+              © 2024 LabLink. Built for Healthcare Innovation Hackathon.
             </p>
             <div className="flex items-center gap-6">
               <a href="#" className="text-white/40 hover:text-white transition-colors text-sm">Privacy Policy</a>

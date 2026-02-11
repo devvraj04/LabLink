@@ -234,8 +234,8 @@ export default function LabPatientPage() {
                         key={tab.id}
                         onClick={() => { setActiveTab(tab.id); if (tab.id === 'orders') fetchOrders(); }}
                         className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${activeTab === tab.id
-                                ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-md'
-                                : 'text-gray-600 hover:bg-gray-100'
+                            ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-md'
+                            : 'text-gray-600 hover:bg-gray-100'
                             }`}
                     >{tab.label}</button>
                 ))}
@@ -282,7 +282,9 @@ export default function LabPatientPage() {
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {tests.map((test) => (
-                                    <div key={test._id} className="glass-card-mini p-4 hover:shadow-xl transition-all duration-300 group">
+                                    <div key={test._id}
+                                        onClick={() => setSelectedTest(test)}
+                                        className="glass-card-mini p-4 hover:shadow-xl transition-all duration-300 group cursor-pointer hover:border-teal-200 hover:-translate-y-0.5">
                                         <div className="flex justify-between items-start mb-2">
                                             <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${test.type === 'RADIOLOGY' ? 'bg-purple-100 text-purple-700' : 'bg-blue-100 text-blue-700'
                                                 }`}>{test.type}</span>
@@ -301,20 +303,28 @@ export default function LabPatientPage() {
                                                     <div className="flex items-center gap-2">
                                                         <span className="text-lg font-bold text-teal-600">₹{test.discountedPrice}</span>
                                                         <span className="text-sm text-gray-400 line-through">₹{test.price}</span>
+                                                        <span className="text-xs font-semibold text-white bg-red-500 px-1.5 py-0.5 rounded">
+                                                            {Math.round(((test.price - test.discountedPrice) / test.price) * 100)}% off
+                                                        </span>
                                                     </div>
                                                 ) : (
                                                     <span className="text-lg font-bold text-teal-600">₹{test.price}</span>
                                                 )}
                                             </div>
-                                            <div className="flex gap-2">
-                                                <button onClick={() => setSelectedTest(test)}
-                                                    className="p-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors text-sm">ℹ️</button>
+                                            <div className="flex gap-2" onClick={(e) => e.stopPropagation()}>
                                                 {isInCart(test._id) ? (
-                                                    <button className="px-3 py-1.5 rounded-lg bg-gray-100 text-gray-400 text-sm" disabled>✓ In Cart</button>
+                                                    <button className="px-4 py-2 rounded-lg bg-gray-100 text-gray-500 text-sm font-medium border border-gray-200 cursor-default flex items-center gap-1.5" disabled>
+                                                        <svg className="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                                                        In Cart
+                                                    </button>
                                                 ) : (
                                                     <button onClick={() => addToCart(test._id)}
-                                                        className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-teal-500 to-cyan-500 text-white text-sm font-medium hover:shadow-lg transition-all">
-                                                        🛒 Add
+                                                        className="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 border border-amber-400 shadow-sm hover:shadow-md active:scale-95"
+                                                        style={{
+                                                            background: 'linear-gradient(to bottom, #f7dfa5, #f0c14b)',
+                                                            color: '#111',
+                                                        }}>
+                                                        🛒 Add to Cart
                                                     </button>
                                                 )}
                                             </div>
@@ -486,10 +496,17 @@ export default function LabPatientPage() {
                                     )}
                                 </div>
                                 {isInCart(selectedTest._id) ? (
-                                    <button className="px-4 py-2 rounded-lg bg-gray-100 text-gray-400" disabled>✓ In Cart</button>
+                                    <button className="px-5 py-2.5 rounded-lg bg-gray-100 text-gray-500 font-medium border border-gray-200 cursor-default flex items-center gap-2" disabled>
+                                        <svg className="w-4 h-4 text-teal-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                                        In Cart
+                                    </button>
                                 ) : (
                                     <button onClick={() => { addToCart(selectedTest._id); setSelectedTest(null); }}
-                                        className="px-4 py-2 rounded-lg bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-medium hover:shadow-lg transition-all">
+                                        className="px-5 py-2.5 rounded-lg font-semibold transition-all duration-200 border border-amber-400 shadow-sm hover:shadow-md active:scale-95"
+                                        style={{
+                                            background: 'linear-gradient(to bottom, #f7dfa5, #f0c14b)',
+                                            color: '#111',
+                                        }}>
                                         🛒 Add to Cart
                                     </button>
                                 )}

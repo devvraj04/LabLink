@@ -115,7 +115,13 @@ export const fetchNearbyFacilities = async (latitude, longitude, radius = 10) =>
 export const getCurrentLocation = () => {
   return new Promise((resolve, reject) => {
     if (!navigator.geolocation) {
-      reject(new Error('Geolocation is not supported by your browser'));
+      // Fallback to Mumbai location if geolocation not supported
+      console.warn('Geolocation not supported, using fallback location');
+      resolve({
+        latitude: 19.0760,
+        longitude: 72.8777,
+        isFallback: true
+      });
       return;
     }
 
@@ -123,28 +129,26 @@ export const getCurrentLocation = () => {
       (position) => {
         resolve({
           latitude: position.coords.latitude,
-          longitude: position.coords.longitude
+          longitude: position.coords.longitude,
+          isFallback: false
         });
       },
       (error) => {
-        switch (error.code) {
-          case error.PERMISSION_DENIED:
-            reject(new Error('Location permission denied. Please enable location access in your browser.'));
-            break;
-          case error.POSITION_UNAVAILABLE:
-            reject(new Error('Location information unavailable'));
-            break;
-          case error.TIMEOUT:
-            reject(new Error('Location request timed out'));
-            break;
-          default:
-            reject(new Error('Unknown location error'));
-        }
+        // Log error but don't reject - use fallback location instead
+        console.warn('Location error:', error);
+        console.warn('Using fallback location (Mumbai)');
+        
+        // Use Mumbai as fallback location so the map still works
+        resolve({
+          latitude: 19.0760,
+          longitude: 72.8777,
+          isFallback: true
+        });
       },
       {
-        enableHighAccuracy: false, // Changed to false for faster response
-        timeout: 30000, // Increased to 30 seconds
-        maximumAge: 300000 // 5 minutes cache
+        enableHighAccuracy: false,
+        timeout: 10000,
+        maximumAge: 300000
       }
     );
   });

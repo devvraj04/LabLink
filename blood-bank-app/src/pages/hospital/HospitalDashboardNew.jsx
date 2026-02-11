@@ -91,30 +91,34 @@ const HospitalDashboard = () => {
 
   const getStatusColor = (status) => {
     const colors = {
-      pending: 'bg-amber-100 text-amber-700 border-amber-200',
-      approved: 'bg-emerald-100 text-emerald-700 border-emerald-200',
-      rejected: 'bg-red-100 text-red-700 border-red-200',
-      fulfilled: 'bg-cyan-100 text-cyan-700 border-cyan-200',
-      cancelled: 'bg-zinc-100 text-zinc-700 border-zinc-200'
+      pending: 'bg-amber-100/60 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-400/30',
+      approved: 'bg-emerald-100/60 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-400/30',
+      rejected: 'bg-red-100/60 dark:bg-red-900/30 text-red-700 dark:text-red-400 border-red-200 dark:border-red-400/30',
+      fulfilled: 'bg-cyan-100/60 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-400 border-cyan-200 dark:border-cyan-400/30',
+      cancelled: 'bg-zinc-100/60 dark:bg-zinc-700/30 text-zinc-700 dark:text-zinc-400 border-zinc-200 dark:border-zinc-600/30'
     };
     return colors[status] || colors.pending;
   };
 
   const getUrgencyColor = (urgency) => {
     const colors = {
-      routine: 'text-zinc-600',
-      urgent: 'text-amber-600',
-      emergency: 'text-red-600'
+      routine: 'text-zinc-600 dark:text-gray-400',
+      urgent: 'text-amber-600 dark:text-amber-400',
+      emergency: 'text-red-600 dark:text-red-400'
     };
     return colors[urgency] || colors.routine;
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-96">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-cyan-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-zinc-600">Loading dashboard...</p>
+      <div className="flex items-center justify-center min-h-96 relative">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-20 w-72 h-72 bg-cyan-300/20 dark:bg-cyan-500/10 rounded-full blur-3xl animate-pulse-slow" />
+          <div className="absolute bottom-20 right-20 w-80 h-80 bg-teal-300/20 dark:bg-teal-500/10 rounded-full blur-3xl animate-float" />
+        </div>
+        <div className="text-center z-10">
+          <div className="w-16 h-16 border-4 border-gradient-to-r from-cyan-600 to-teal-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-zinc-700 dark:text-gray-300 font-bold text-lg">Loading dashboard...</p>
         </div>
       </div>
     );
@@ -243,7 +247,7 @@ const HospitalDashboard = () => {
                 to="/hospital/requests"
                 className="text-sm text-cyan-600 hover:text-cyan-700 font-medium"
               >
-                View All
+                View All →
               </Link>
             </div>
 
@@ -262,31 +266,31 @@ const HospitalDashboard = () => {
                 </div>
               ) : (
                 recentRequests.map((request) => (
-                  <div key={request._id} className="px-6 py-4 hover:bg-zinc-50 transition-colors">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-red-100 rounded-lg">
-                          <Droplets className="h-5 w-5 text-red-600" />
+                  <div key={request._id} className="px-8 py-5 hover:bg-white/30 dark:hover:bg-white/5 transition-all duration-300 group">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 bg-gradient-to-br from-red-500/30 to-red-600/20 dark:from-red-500/15 dark:to-red-600/10 rounded-xl border border-red-300/50 dark:border-red-400/30">
+                          <Droplets className="h-6 w-6 text-red-600 dark:text-red-400" />
                         </div>
                         <div>
-                          <p className="font-semibold text-zinc-900">{request.bloodGroup}</p>
-                          <p className="text-sm text-zinc-600">{request.quantity} units</p>
+                          <p className="font-bold text-zinc-900 dark:text-white text-lg">{request.bloodGroup}</p>
+                          <p className="text-sm text-zinc-600 dark:text-gray-400">{request.quantity} units</p>
                         </div>
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusColor(request.status)}`}>
-                        {request.status}
+                      <span className={`px-4 py-1.5 rounded-full text-xs font-bold border backdrop-blur-sm ${getStatusColor(request.status)}`}>
+                        {request.status.toUpperCase()}
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
                       <span className={`font-medium ${getUrgencyColor(request.urgency)}`}>
                         {request.urgency?.charAt(0).toUpperCase() + request.urgency?.slice(1)}
                       </span>
-                      <span className="text-zinc-500">
+                      <span className="text-zinc-500 dark:text-gray-400">
                         {new Date(request.requestDate).toLocaleDateString()}
                       </span>
                     </div>
                     {request.reason && (
-                      <p className="text-sm text-zinc-600 mt-2 line-clamp-1">{request.reason}</p>
+                      <p className="text-sm text-zinc-600 dark:text-gray-400 mt-2 line-clamp-1 group-hover:line-clamp-none transition-all">{request.reason}</p>
                     )}
                   </div>
                 ))
@@ -298,21 +302,21 @@ const HospitalDashboard = () => {
         {/* Sidebar */}
         <div className="lg:col-span-1 space-y-6">
           {/* Blood Inventory */}
-          <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20">
-            <div className="px-6 py-4 border-b border-zinc-200">
-              <h2 className="text-lg font-semibold text-zinc-900 flex items-center gap-2">
-                <Package className="h-5 w-5" />
+          <div className="glass-card bg-gradient-to-br from-emerald-500/25 to-teal-500/15 dark:from-emerald-500/10 dark:to-teal-500/5 rounded-3xl shadow-xl border border-white/20 dark:border-white/10 backdrop-blur-xl overflow-hidden">
+            <div className="px-6 py-4 border-b border-white/10 dark:border-white/5 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 dark:from-emerald-500/5 dark:to-teal-500/5">
+              <h2 className="text-lg font-black text-zinc-900 dark:text-white flex items-center gap-2">
+                <Package className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
                 Blood Inventory
               </h2>
-              <p className="text-sm text-zinc-600 mt-1">Currently available</p>
+              <p className="text-sm text-zinc-600 dark:text-gray-400 mt-1 font-semibold">Currently available</p>
             </div>
 
             <div className="p-6">
               {inventory.length === 0 ? (
-                <div className="text-center py-8">
-                  <AlertCircle className="h-12 w-12 text-zinc-300 mx-auto mb-3" />
-                  <p className="text-zinc-500">No inventory received yet</p>
-                  <p className="text-sm text-zinc-400 mt-1">Request blood to build your inventory</p>
+                <div className="text-center py-10">
+                  <AlertCircle className="h-14 w-14 text-zinc-300 dark:text-gray-700 mx-auto mb-3" />
+                  <p className="text-zinc-600 dark:text-gray-400 font-semibold">No inventory yet</p>
+                  <p className="text-sm text-zinc-500 dark:text-gray-500 mt-1">Request blood to build your stock</p>
                 </div>
               ) : (
                 <div className="grid grid-cols-2 gap-3">
@@ -321,11 +325,11 @@ const HospitalDashboard = () => {
                       key={item.bloodGroup}
                       className="p-4 bg-zinc-50 rounded-lg border border-zinc-200 hover:border-cyan-300 transition-colors"
                     >
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-lg font-bold text-red-600">{item.bloodGroup}</span>
-                        <Droplets className="h-5 w-5 text-red-400" />
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-2xl font-black bg-gradient-to-r from-red-600 to-red-700 dark:from-red-400 dark:to-red-500 bg-clip-text text-transparent">{item.bloodGroup}</span>
+                        <Droplets className="h-5 w-5 text-red-600 dark:text-red-400 group-hover:scale-110 transition-transform" />
                       </div>
-                      <p className="text-sm text-zinc-600">{item.quantity} units</p>
+                      <p className="text-sm font-bold text-zinc-600 dark:text-gray-400">{item.quantity} units</p>
                     </div>
                   ))}
                 </div>
@@ -339,8 +343,8 @@ const HospitalDashboard = () => {
               <MessageSquare className="h-5 w-5" />
               Need Help?
             </h3>
-            <p className="text-cyan-100 text-sm mb-4">
-              Contact admin for urgent blood requests or queries
+            <p className="text-zinc-700 dark:text-gray-300 text-sm mb-5 font-semibold">
+              Need help? Contact admin for urgent requests
             </p>
             <Link
               to="/hospital/chat"

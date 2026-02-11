@@ -104,7 +104,7 @@ const seedDatabase = async () => {
         email: 'tata.memorial@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-01-15')
+        registrationDate: new Date('2026-01-15')
       },
       {
         Hosp_Id: 102,
@@ -118,7 +118,7 @@ const seedDatabase = async () => {
         email: 'kem.mumbai@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-02-10')
+        registrationDate: new Date('2026-02-10')
       },
       {
         Hosp_Id: 103,
@@ -132,7 +132,7 @@ const seedDatabase = async () => {
         email: 'lilavati.mumbai@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-03-05')
+        registrationDate: new Date('2026-03-05')
       },
       {
         Hosp_Id: 104,
@@ -146,7 +146,7 @@ const seedDatabase = async () => {
         email: 'hinduja.mumbai@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-04-20')
+        registrationDate: new Date('2026-04-20')
       },
       {
         Hosp_Id: 105,
@@ -160,7 +160,7 @@ const seedDatabase = async () => {
         email: 'nanavati.mumbai@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-05-12')
+        registrationDate: new Date('2026-05-12')
       },
       {
         Hosp_Id: 106,
@@ -174,7 +174,7 @@ const seedDatabase = async () => {
         email: 'fortis.mulund@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-06-08')
+        registrationDate: new Date('2026-06-08')
       },
       {
         Hosp_Id: 107,
@@ -188,7 +188,7 @@ const seedDatabase = async () => {
         email: 'breachcandy.mumbai@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-07-15')
+        registrationDate: new Date('2026-07-15')
       },
       {
         Hosp_Id: 108,
@@ -202,7 +202,7 @@ const seedDatabase = async () => {
         email: 'kokilaben.mumbai@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-08-22')
+        registrationDate: new Date('2026-08-22')
       },
       {
         Hosp_Id: 109,
@@ -216,7 +216,7 @@ const seedDatabase = async () => {
         email: 'sion.mumbai@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-09-10')
+        registrationDate: new Date('2026-09-10')
       },
       {
         Hosp_Id: 110,
@@ -230,7 +230,7 @@ const seedDatabase = async () => {
         email: 'jj.mumbai@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-10-05')
+        registrationDate: new Date('2026-10-05')
       },
       // ===== PUNE HOSPITALS (3) =====
       {
@@ -245,7 +245,7 @@ const seedDatabase = async () => {
         email: 'rubyhall.pune@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-03-18')
+        registrationDate: new Date('2026-03-18')
       },
       {
         Hosp_Id: 202,
@@ -259,7 +259,7 @@ const seedDatabase = async () => {
         email: 'jehangir.pune@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-04-25')
+        registrationDate: new Date('2026-04-25')
       },
       {
         Hosp_Id: 203,
@@ -273,7 +273,7 @@ const seedDatabase = async () => {
         email: 'noble.pune@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-05-30')
+        registrationDate: new Date('2026-05-30')
       },
       // ===== DELHI HOSPITALS (2) =====
       {
@@ -288,7 +288,7 @@ const seedDatabase = async () => {
         email: 'aiims.delhi@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-02-14')
+        registrationDate: new Date('2026-02-14')
       },
       {
         Hosp_Id: 302,
@@ -302,7 +302,7 @@ const seedDatabase = async () => {
         email: 'safdarjung.delhi@seed.com',
         password: await bcrypt.hash('hospital123', 10),
         isApproved: true,
-        registrationDate: new Date('2024-07-08')
+        registrationDate: new Date('2026-07-08')
       }
     ]);
     

@@ -161,7 +161,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
 
         {/* Footer */}
         <div className="p-5 border-t border-white/10 flex-shrink-0">
-          <p className="text-[11px] text-white/40">© 2025 HealthTech</p>
+          <p className="text-[11px] text-white/40">© 2026 LabLink</p>
           <p className="text-[10px] text-white/25 mt-0.5">v2.1.0</p>
         </div>
       </aside>

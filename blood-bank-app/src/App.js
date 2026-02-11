@@ -32,6 +32,8 @@ import BloodStockMapPage from './pages/BloodStockMapPage';
 import EnhancedAnalyticsPage from './pages/EnhancedAnalyticsPage';
 import LabPatientPage from './pages/LabPatientPage';
 import LabTechnicianPage from './pages/LabTechnicianPage';
+import PatientRegistrationPage from './pages/PatientRegistrationPage';
+import PatientDashboard from './pages/PatientDashboard';
 
 // Logout component
 const Logout = () => {
@@ -99,8 +101,10 @@ function App() {
                 <Route path="camps" element={<CampsPage />} />
                 <Route path="map" element={<BloodStockMapPage />} />
                 <Route path="analytics" element={<EnhancedAnalyticsPage />} />
-                <Route path="lab-patient" element={<LabPatientPage />} />
+                <Route path="lab-patient" element={<PatientDashboard />} />
+                <Route path="lab-catalog" element={<LabPatientPage />} />
                 <Route path="lab-technician" element={<LabTechnicianPage />} />
+                <Route path="patient-registration" element={<PatientRegistrationPage />} />
               </Route>
 
               {/* Legacy route redirects */}

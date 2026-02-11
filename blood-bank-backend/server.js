@@ -73,6 +73,8 @@ app.use('/api/analytics', require('./routes/analytics.routes'));
 app.use('/api/eraktkosh', require('./routes/eraktkosh.routes'));
 // Lab Management routes
 app.use('/api/lab', require('./routes/lab.routes'));
+// Patient Registration (Smart Panjikaran) routes
+app.use('/api/patients', require('./routes/patient.routes'));
 
 // Root route
 app.get('/', (req, res) => {

@@ -41,9 +41,13 @@ const Layout = () => {
       case '/app/requests':
         return 'Blood Requests';
       case '/app/lab-patient':
-        return 'Lab & Diagnostics';
+        return 'Patient Dashboard';
+      case '/app/lab-catalog':
+        return 'Book Lab Tests';
       case '/app/lab-technician':
         return 'Lab Technician';
+      case '/app/patient-registration':
+        return 'Smart Panjikaran';
       default:
         return 'Dashboard';
     }

@@ -35,7 +35,9 @@ const labOrderSchema = new mongoose.Schema({
     paymentAmount: { type: Number, default: 0 },
     paymentDate: { type: Date, default: null },
     paymentReference: { type: String, default: null },
-    // Session identifier (for grouping cart items)
+    // Link to registered patient account (if logged in)
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null },
+    // Session identifier (for grouping cart items / anonymous patients)
     sessionId: { type: String, default: null },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
@@ -49,6 +51,7 @@ labOrderSchema.pre('save', function (next) {
 labOrderSchema.index({ status: 1 });
 labOrderSchema.index({ sessionId: 1 });
 labOrderSchema.index({ patientEmail: 1 });
+labOrderSchema.index({ userId: 1 });
 labOrderSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.model('LabOrder', labOrderSchema);

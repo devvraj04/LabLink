@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Droplets, Users, Heart, Building2, MessageSquare, Package, X, AlertCircle, Tent, Map, BarChart3, Microscope, FlaskConical } from 'lucide-react';
+import { LayoutDashboard, Droplets, Users, Heart, Building2, MessageSquare, Package, X, AlertCircle, Tent, Map, BarChart3, Microscope, FlaskConical, UserPlus } from 'lucide-react';
 import { adminHospitalsAPI } from '../../services/api';
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
@@ -39,6 +39,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
     { name: 'Analytics', path: '/app/analytics', icon: BarChart3 },
     { name: 'Lab (Patient)', path: '/app/lab-patient', icon: FlaskConical },
     { name: 'Lab (Technician)', path: '/app/lab-technician', icon: Microscope },
+    { name: 'Smart Panjikaran', path: '/app/patient-registration', icon: UserPlus },
   ];
 
   return (

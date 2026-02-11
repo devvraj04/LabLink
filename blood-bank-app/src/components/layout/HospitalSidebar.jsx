@@ -1,11 +1,29 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Package, MessageSquare, X, Building2 } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Package,
+  MessageSquare,
+  X,
+  Building2,
+  Heart,
+  Users,
+  CalendarCheck,
+  Siren,
+  TestTubes,
+  Droplets
+} from 'lucide-react';
 
 const HospitalSidebar = ({ isOpen, toggleSidebar }) => {
   const navItems = [
     { name: 'Dashboard', path: '/hospital/dashboard', icon: LayoutDashboard },
-    { name: 'My Requests', path: '/hospital/requests', icon: Package },
+    { name: 'My Requests', path: '/hospital/requests', icon: Droplets },
+    { name: 'Inventory', path: '/hospital/inventory', icon: Package },
+    { name: 'Donors', path: '/hospital/donors', icon: Heart },
+    { name: 'Recipients', path: '/hospital/recipients', icon: Users },
+    { name: 'Donation Camps', path: '/hospital/camps', icon: CalendarCheck },
+    { name: 'Lab Technician', path: '/hospital/lab-technician', icon: TestTubes },
+    { name: 'Emergency SOS', path: '/hospital/sos', icon: Siren },
     { name: 'Chat with Admin', path: '/hospital/chat', icon: MessageSquare },
   ];
 

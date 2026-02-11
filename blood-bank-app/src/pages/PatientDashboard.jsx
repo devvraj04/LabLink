@@ -223,6 +223,46 @@ export default function PatientDashboard() {
                 ))}
             </div>
 
+            {/* Quick Access Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div onClick={() => navigate('/app/medical-record')}
+                    className="glass-card-mini p-5 cursor-pointer hover:shadow-lg transition-all group">
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-white text-xl group-hover:scale-110 transition-transform">
+                            📋
+                        </div>
+                        <div>
+                            <h3 className="font-semibold text-gray-800">My Medical Record</h3>
+                            <p className="text-xs text-gray-400">Vitals, history & health score</p>
+                        </div>
+                    </div>
+                </div>
+                <div onClick={() => navigate('/app/camps')}
+                    className="glass-card-mini p-5 cursor-pointer hover:shadow-lg transition-all group">
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 flex items-center justify-center text-white text-xl group-hover:scale-110 transition-transform">
+                            🏕️
+                        </div>
+                        <div>
+                            <h3 className="font-semibold text-gray-800">Donation Camps</h3>
+                            <p className="text-xs text-gray-400">Find nearby blood donation camps</p>
+                        </div>
+                    </div>
+                </div>
+                <div onClick={() => navigate('/app/lab-catalog')}
+                    className="glass-card-mini p-5 cursor-pointer hover:shadow-lg transition-all group">
+                    <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-white text-xl group-hover:scale-110 transition-transform">
+                            🧪
+                        </div>
+                        <div>
+                            <h3 className="font-semibold text-gray-800">Book Lab Test</h3>
+                            <p className="text-xs text-gray-400">Browse & book diagnostic tests</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {/* Patient Info Card */}
             {patient && (
                 <div className="glass-card-mini p-6">

@@ -48,6 +48,8 @@ const Layout = () => {
         return 'Lab Technician';
       case '/app/patient-registration':
         return 'Smart Panjikaran';
+      case '/app/medical-record':
+        return 'Medical Record';
       default:
         return 'Dashboard';
     }

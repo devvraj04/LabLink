@@ -1,0 +1,54 @@
+{
+  "short_name": "BloodLink",
+  "name": "BloodLink - Smart Blood Bank Management System",
+  "description": "Complete blood bank management with emergency response, appointments, donor rewards, and analytics",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#DC2626",
+  "background_color": "#ffffff",
+  "orientation": "portrait",
+  "scope": "/",
+  "categories": ["health", "medical", "productivity"],
+  "shortcuts": [
+    {
+      "name": "Emergency SOS",
+      "short_name": "Emergency",
+      "description": "Broadcast emergency blood request",
+      "url": "/emergency",
+      "icons": [{ "src": "favicon.ico", "sizes": "96x96" }]
+    },
+    {
+      "name": "Book Appointment",
+      "short_name": "Appointment",
+      "description": "Schedule blood donation appointment",
+      "url": "/appointments",
+      "icons": [{ "src": "favicon.ico", "sizes": "96x96" }]
+    },
+    {
+      "name": "My Rewards",
+      "short_name": "Rewards",
+      "description": "View donor rewards and points",
+      "url": "/rewards",
+      "icons": [{ "src": "favicon.ico", "sizes": "96x96" }]
+    }
+  ]
+}

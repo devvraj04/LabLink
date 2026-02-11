@@ -1,0 +1,699 @@
+{
+  "info": {
+    "name": "BloodLink API Collection",
+    "description": "Complete API collection for BloodLink Blood Bank Management System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "bloodlink"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://blood-bank-backend-6nml.onrender.com/api",
+      "type": "string"
+    },
+    {
+      "key": "localUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hospitalToken",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Admin/Staff",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Admin User\",\n  \"email\": \"admin@bloodbank.in\",\n  \"password\": \"admin123\",\n  \"role\": \"manager\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login Admin/Staff",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"authToken\", jsonData.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@bloodbank.in\",\n  \"password\": \"admin123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Blood Inventory",
+      "item": [
+        {
+          "name": "Get All Blood Specimens",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bloodspecimens?page=1&limit=50",
+              "host": ["{{baseUrl}}"],
+              "path": ["bloodspecimens"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "key": "bloodGroup",
+                  "value": "O+",
+                  "disabled": true
+                },
+                {
+                  "key": "status",
+                  "value": "Available",
+                  "disabled": true
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Blood Specimen by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bloodspecimens/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["bloodspecimens", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Blood Specimen",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Specimen_Number\": \"SP001\",\n  \"Blood_Group\": \"O+\",\n  \"Donor_ID\": \"donor_id_here\",\n  \"M_Id\": \"manager_id_here\",\n  \"Expiry_Date\": \"2026-03-15\",\n  \"Disease_Tested\": true,\n  \"Status\": \"Available\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bloodspecimens",
+              "host": ["{{baseUrl}}"],
+              "path": ["bloodspecimens"]
+            }
+          }
+        },
+        {
+          "name": "Update Blood Specimen",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Status\": \"Reserved\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/bloodspecimens/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["bloodspecimens", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Blood Specimen",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bloodspecimens/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["bloodspecimens", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Inventory Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/bloodspecimens/summary/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["bloodspecimens", "summary", "stats"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Donors",
+      "item": [
+        {
+          "name": "Get All Donors",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/donors?page=1&limit=50",
+              "host": ["{{baseUrl}}"],
+              "path": ["donors"],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "50"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Donor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"D_Name\": \"John Doe\",\n  \"D_Age\": 28,\n  \"D_Bgroup\": \"O+\",\n  \"D_Reg_Date\": \"2026-01-08\",\n  \"D_Phno\": \"1234567890\",\n  \"D_Mail\": \"john@example.com\",\n  \"City_ID\": \"city_id_here\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/donors",
+              "host": ["{{baseUrl}}"],
+              "path": ["donors"]
+            }
+          }
+        },
+        {
+          "name": "Get Donor Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/donors/stats/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["donors", "stats", "summary"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Hospitals",
+      "item": [
+        {
+          "name": "Register Hospital",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Hosp_Name\": \"City Hospital\",\n  \"email\": \"hospital@example.com\",\n  \"password\": \"password123\",\n  \"phone\": \"1234567890\",\n  \"address\": \"123 Main St\",\n  \"City_ID\": \"city_id_here\",\n  \"type\": \"general\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/hospital/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["hospital", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login Hospital",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"hospitalToken\", jsonData.data.token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"hospital@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/hospital/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["hospital", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Get All Hospitals",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/hospitals",
+              "host": ["{{baseUrl}}"],
+              "path": ["hospitals"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Blood Requests",
+      "item": [
+        {
+          "name": "Get All Requests",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/requests",
+              "host": ["{{baseUrl}}"],
+              "path": ["requests"]
+            }
+          }
+        },
+        {
+          "name": "Create Blood Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bloodGroup\": \"O+\",\n  \"unitsNeeded\": 3,\n  \"urgencyLevel\": \"high\",\n  \"patientName\": \"Patient Name\",\n  \"reason\": \"Surgery\",\n  \"hospitalId\": \"hospital_id_here\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/requests",
+              "host": ["{{baseUrl}}"],
+              "path": ["requests"]
+            }
+          }
+        },
+        {
+          "name": "Approve Request",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/requests/:id/approve",
+              "host": ["{{baseUrl}}"],
+              "path": ["requests", ":id", "approve"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Emergency",
+      "item": [
+        {
+          "name": "Create Emergency Request",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bloodGroup\": \"O-\",\n  \"unitsNeeded\": 5,\n  \"patientName\": \"Emergency Patient\",\n  \"hospitalId\": \"hospital_id_here\",\n  \"contactNumber\": \"9999999999\",\n  \"location\": \"City Hospital, Emergency Ward\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/emergency",
+              "host": ["{{baseUrl}}"],
+              "path": ["emergency"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Emergencies",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/emergency/active",
+              "host": ["{{baseUrl}}"],
+              "path": ["emergency", "active"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Appointments",
+      "item": [
+        {
+          "name": "Get All Appointments",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/appointments",
+              "host": ["{{baseUrl}}"],
+              "path": ["appointments"]
+            }
+          }
+        },
+        {
+          "name": "Create Appointment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"donorId\": \"donor_id_here\",\n  \"appointmentDate\": \"2026-01-15\",\n  \"timeSlot\": \"10:00 AM\",\n  \"purpose\": \"Blood Donation\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/appointments",
+              "host": ["{{baseUrl}}"],
+              "path": ["appointments"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Donation Camps",
+      "item": [
+        {
+          "name": "Get All Camps",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/camps",
+              "host": ["{{baseUrl}}"],
+              "path": ["camps"]
+            }
+          }
+        },
+        {
+          "name": "Create Camp",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Camp_Name\": \"City Blood Drive 2026\",\n  \"Camp_Date\": \"2026-02-15\",\n  \"Location\": \"Community Center\",\n  \"City_ID\": \"city_id_here\",\n  \"Organized_By\": \"manager_id_here\",\n  \"expectedDonors\": 100,\n  \"startTime\": \"09:00 AM\",\n  \"endTime\": \"05:00 PM\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/camps",
+              "host": ["{{baseUrl}}"],
+              "path": ["camps"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Chat",
+      "item": [
+        {
+          "name": "Admin - Get All Conversations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/chat/conversations",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "chat", "conversations"]
+            }
+          }
+        },
+        {
+          "name": "Admin - Get Hospital Messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/chat/messages/:hospitalId",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "chat", "messages", ":hospitalId"],
+              "variable": [
+                {
+                  "key": "hospitalId",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Admin - Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"Your request has been approved\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/chat/send/:hospitalId",
+              "host": ["{{baseUrl}}"],
+              "path": ["admin", "chat", "send", ":hospitalId"],
+              "variable": [
+                {
+                  "key": "hospitalId",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Hospital - Get Messages",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{hospitalToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/chat/hospital/messages",
+              "host": ["{{baseUrl}}"],
+              "path": ["chat", "hospital", "messages"]
+            }
+          }
+        },
+        {
+          "name": "Hospital - Send Message",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{hospitalToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"We need 5 units of O+ blood urgently\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/chat/hospital/send",
+              "host": ["{{baseUrl}}"],
+              "path": ["chat", "hospital", "send"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Get Dashboard Statistics",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/dashboard",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "dashboard"]
+            }
+          }
+        },
+        {
+          "name": "Get Donation Trends",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/analytics/trends?period=monthly",
+              "host": ["{{baseUrl}}"],
+              "path": ["analytics", "trends"],
+              "query": [
+                {
+                  "key": "period",
+                  "value": "monthly"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

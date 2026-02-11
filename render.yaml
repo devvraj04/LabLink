@@ -1,0 +1,36 @@
+services:
+  # Backend Service
+  - type: web
+    name: blood-bank-backend
+    env: node
+    rootDir: blood-bank-backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRE
+        value: 7d
+      - key: FRONTEND_URL
+        value: https://blood-bank-frontend.onrender.com
+
+  # Frontend Service
+  - type: web
+    name: blood-bank-frontend
+    env: static
+    rootDir: blood-bank-app
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://blood-bank-backend.onrender.com/api
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

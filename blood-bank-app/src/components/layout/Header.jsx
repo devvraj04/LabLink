@@ -50,10 +50,10 @@ const Header = ({ title, toggleSidebar }) => {
       <div className="flex items-center gap-2 sm:gap-3">
         <div className="text-right hidden sm:block">
           <div className="flex items-center gap-2 justify-end">
-            <p className="text-sm font-medium text-gray-800">{user?.name || 'User'}</p>
+            <p className="text-sm font-bold text-white">{user?.name || 'User'}</p>
             {user?.role && getRoleBadge(user.role)}
           </div>
-          <p className="text-xs text-gray-500">{user?.email || ''}</p>
+          <p className="text-xs text-teal-100/70">{user?.email || ''}</p>
         </div>
 
         <div className="relative z-50">

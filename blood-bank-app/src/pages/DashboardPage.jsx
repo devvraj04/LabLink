@@ -91,8 +91,8 @@ const DashboardPage = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="mb-8">
-        <h3 className="text-3xl font-extrabold text-teal-900 mb-2 tracking-tight">Overview</h3>
-        <p className="text-slate-600 font-medium">Welcome to your advanced Blood Bank Management System</p>
+        <h3 className="text-3xl font-extrabold text-white mb-2 tracking-tight">Overview</h3>
+        <p className="text-teal-100/80 font-medium">Welcome to your advanced Blood Bank Management System</p>
       </div>
 
       {stats ? (
@@ -163,8 +163,8 @@ const DashboardPage = () => {
 
           {/* Blood Group Inventory Card */}
           <div className="content-card p-6">
-            <h3 className="text-xl font-bold text-teal-900 mb-6 flex items-center gap-2">
-              <Droplets className="h-5 w-5 text-teal-600" />
+            <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
+              <Droplets className="h-5 w-5 text-teal-300" />
               Blood Group Inventory
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -173,14 +173,14 @@ const DashboardPage = () => {
                   <div
                     key={bloodGroup}
                     className={`p-4 rounded-2xl border transition-all duration-300 hover:-translate-y-1 ${count < 5
-                      ? 'bg-red-50/80 border-red-200 shadow-lg shadow-red-900/5'
-                      : 'bg-emerald-50/80 border-emerald-200 shadow-lg shadow-emerald-900/5'
+                        ? 'bg-rose-900/40 border-rose-500/30 shadow-lg shadow-rose-900/10'
+                        : 'bg-emerald-900/40 border-emerald-500/30 shadow-lg shadow-emerald-900/10'
                       }`}
                   >
-                    <div className="text-3xl font-black text-slate-800">{bloodGroup}</div>
-                    <div className="text-sm text-slate-600 font-medium mt-1">{count} units</div>
+                    <div className="text-3xl font-black text-white">{bloodGroup}</div>
+                    <div className="text-sm text-teal-100/70 font-medium mt-1">{count} units</div>
                     {count < 5 && (
-                      <div className="flex items-center gap-1.5 text-xs text-rose-600 mt-3 font-bold bg-white/60 py-1 px-2 rounded-full w-fit">
+                      <div className="flex items-center gap-1.5 text-xs text-white mt-3 font-bold bg-rose-500/80 py-1 px-2 rounded-full w-fit">
                         <AlertTriangle className="h-3.5 w-3.5" />
                         Low Stock
                       </div>
@@ -189,8 +189,8 @@ const DashboardPage = () => {
                 ))
               ) : (
                 <div className="col-span-4 text-center py-8">
-                  <Droplets className="mx-auto h-12 w-12 text-zinc-400" />
-                  <p className="mt-2 text-sm text-zinc-500">No blood group data available</p>
+                  <Droplets className="mx-auto h-12 w-12 text-teal-300/30" />
+                  <p className="mt-2 text-sm text-white/50">No blood group data available</p>
                 </div>
               )}
             </div>
@@ -198,7 +198,7 @@ const DashboardPage = () => {
 
           {/* Quick Actions Card */}
           <div className="content-card p-6">
-            <h3 className="text-xl font-bold text-teal-900 mb-6">Quick Actions</h3>
+            <h3 className="text-xl font-bold text-white mb-6">Quick Actions</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               <button
                 onClick={() => navigate('/inventory')}
@@ -269,9 +269,9 @@ const DashboardPage = () => {
                     <AlertTriangle className="h-5 w-5 text-amber-600" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-sm font-semibold text-amber-900">Low Stock Alert</h3>
-                    <div className="mt-1 text-sm text-amber-800/80">
-                      <p>The following blood groups are running low: <span className="font-bold text-amber-900 bg-amber-100/50 px-2 py-0.5 rounded-md">{stats.lowStockGroups.join(', ')}</span></p>
+                    <h3 className="text-sm font-semibold text-amber-200">Low Stock Alert</h3>
+                    <div className="mt-1 text-sm text-amber-100/80">
+                      <p>The following blood groups are running low: <span className="font-bold text-amber-100 bg-amber-500/30 px-2 py-0.5 rounded-md">{stats.lowStockGroups.join(', ')}</span></p>
                     </div>
                   </div>
                 </div>
@@ -280,9 +280,9 @@ const DashboardPage = () => {
           )}
         </>
       ) : (
-        <div className="p-12 bg-white rounded-lg border border-zinc-200 text-center">
-          <Droplets className="mx-auto h-16 w-16 text-zinc-400" />
-          <p className="mt-4 text-lg font-medium text-zinc-900">No statistics available</p>
+        <div className="p-12 glass-card text-center">
+          <Droplets className="mx-auto h-16 w-16 text-teal-300/30" />
+          <p className="mt-4 text-lg font-medium text-white/50">No statistics available</p>
         </div>
       )
       }

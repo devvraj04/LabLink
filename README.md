@@ -213,7 +213,7 @@ npm or yarn
 ### 1️⃣ Clone the Repository
 ```bash
 git clone <your-repo-url>
-cd Healthtech-mobile-app
+cd LabLink
 ```
 
 ### 2️⃣ Backend Setup

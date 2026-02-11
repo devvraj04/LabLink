@@ -577,7 +577,7 @@ export default function LabTechnicianPage() {
                                         .title { font-size:16px; font-weight:bold; color:#0d9488; margin-bottom:20px; }
                                         @media print { .no-print { display:none; } }
                                     </style></head><body>
-                                    <div class="title">HealthTech Labs</div>
+                                    <div class="title">LabLink Labs</div>
                                     <div class="label">Sample Barcode</div>
                                     <svg id="barcode"></svg>
                                     <br/>
@@ -724,7 +724,7 @@ export default function LabTechnicianPage() {
                         @media print { .no-print { display: none; } }
                     </style></head><body>
                     <div class="header">
-                        <h1>🏥 HealthTech Labs</h1>
+                        <h1>🏥 LabLink Labs</h1>
                         <p>Diagnostic Report</p>
                     </div>
                     ${reportViewModal.isCritical ? '<div class="critical">⚠️ CRITICAL VALUES DETECTED — IMMEDIATE ATTENTION REQUIRED</div>' : ''}

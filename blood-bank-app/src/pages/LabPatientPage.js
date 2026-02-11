@@ -187,7 +187,7 @@ export default function LabPatientPage() {
       </style></head><body>
       <div class="header">
         <h1>🔬 Lab Report</h1>
-        <p>LabLink Labs — Diagnostic Excellence</p>
+        <p>HealthTech Labs — Diagnostic Excellence</p>
       </div>
       <div class="info-grid">
         <div class="info-item"><strong>Patient:</strong> ${order.patientName || 'N/A'}</div>

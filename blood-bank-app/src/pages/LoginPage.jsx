@@ -5,7 +5,6 @@ import { useHospitalAuth } from '../context/HospitalAuthContext';
 import { useToast } from '../context/ToastContext';
 import { Mail, Lock, LogIn, Loader2, Building2, Shield, Heart, ArrowLeft, UserCheck } from 'lucide-react';
 import { patientAPI } from '../services/patientService';
-import ThemeToggle from '../components/ThemeToggle';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -44,7 +43,7 @@ const LoginPage = () => {
         const result = await adminLogin(formData.email, formData.password);
 
         if (result.success) {
-          success('Login successful', 'Welcome back to LabLink');
+          success('Login successful', 'Welcome back to HealthTech');
           navigate('/app/dashboard');
         } else {
           setError(result.error || 'Login failed. Please try again.');
@@ -108,51 +107,46 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-page min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-gradient-to-br from-white to-gray-50 dark:from-gray-950 dark:to-gray-900">
+    <div className="login-page min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-64 h-64 bg-white/10 dark:bg-white/5 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute top-40 right-20 w-80 h-80 bg-cyan-300/15 dark:bg-cyan-300/10 rounded-full blur-3xl animate-float" />
-        <div className="absolute bottom-20 left-1/4 w-72 h-72 bg-teal-300/10 dark:bg-teal-300/5 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
-        <div className="absolute -bottom-10 right-10 w-56 h-56 bg-emerald-300/15 dark:bg-emerald-300/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
+        <div className="absolute top-20 left-10 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse-slow" />
+        <div className="absolute top-40 right-20 w-80 h-80 bg-cyan-300/15 rounded-full blur-3xl animate-float" />
+        <div className="absolute bottom-20 left-1/4 w-72 h-72 bg-teal-300/10 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1s' }} />
+        <div className="absolute -bottom-10 right-10 w-56 h-56 bg-emerald-300/15 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }} />
       </div>
 
       {/* Back to Home Link */}
       <Link
         to="/"
-        className={`absolute top-6 left-6 flex items-center gap-2 text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white transition-all duration-300 z-20 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
+        className={`absolute top-6 left-6 flex items-center gap-2 text-white/80 hover:text-white transition-all duration-300 z-20 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
       >
         <ArrowLeft className="w-4 h-4" />
         <span className="text-sm font-medium">Back to Home</span>
       </Link>
 
-      {/* Theme Toggle */}
-      <div className={`absolute top-6 right-6 z-20 transition-all duration-300 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}`}>
-        <ThemeToggle />
-      </div>
-
       {/* Login Card */}
       <div className={`relative z-10 w-full max-w-md transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
         {/* Glass Card */}
-        <div className="login-glass-card dark:bg-gray-800/30 dark:backdrop-blur-xl rounded-3xl overflow-hidden">
+        <div className="login-glass-card rounded-3xl overflow-hidden">
           {/* Header */}
           <div className="px-8 pt-8 pb-6 text-center">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-400 to-cyan-500 mb-4 shadow-lg shadow-teal-500/30">
               <Heart className="w-7 h-7 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">Welcome Back</h1>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">Sign in to continue to LabLink</p>
+            <h1 className="text-2xl font-bold text-gray-800 mb-1">Welcome Back</h1>
+            <p className="text-gray-500 text-sm">Sign in to continue to HealthTech</p>
           </div>
 
           {/* Login Type Tabs */}
           <div className="px-8 mb-6">
-            <div className="flex bg-gray-100 dark:bg-gray-700/50 rounded-xl p-1">
+            <div className="flex bg-gray-100 rounded-xl p-1">
               <button
                 type="button"
                 onClick={() => switchLoginType('admin')}
                 className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${loginType === 'admin'
-                  ? 'bg-white dark:bg-gray-600 text-teal-600 dark:text-cyan-400 shadow-sm'
-                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'
+                  ? 'bg-white text-teal-600 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
                   }`}
               >
                 <Shield className="w-4 h-4" />
@@ -162,8 +156,8 @@ const LoginPage = () => {
                 type="button"
                 onClick={() => switchLoginType('hospital')}
                 className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${loginType === 'hospital'
-                  ? 'bg-white dark:bg-gray-600 text-teal-600 dark:text-cyan-400 shadow-sm'
-                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'
+                  ? 'bg-white text-teal-600 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
                   }`}
               >
                 <Building2 className="w-4 h-4" />
@@ -173,8 +167,8 @@ const LoginPage = () => {
                 type="button"
                 onClick={() => switchLoginType('patient')}
                 className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${loginType === 'patient'
-                  ? 'bg-white dark:bg-gray-600 text-teal-600 dark:text-cyan-400 shadow-sm'
-                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100'
+                  ? 'bg-white text-teal-600 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
                   }`}
               >
                 <UserCheck className="w-4 h-4" />
@@ -186,26 +180,26 @@ const LoginPage = () => {
           {/* Form */}
           <div className="px-8 pb-8">
             {error && (
-              <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-100 dark:border-red-700/50 text-red-600 dark:text-red-400 rounded-xl text-sm">
+              <div className="mb-4 p-3 bg-red-50 border border-red-100 text-red-600 rounded-xl text-sm">
                 {error}
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1.5">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
                   {loginType === 'patient' ? 'UHID / Email' : 'Email Address'}
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
                     type={loginType === 'patient' ? 'text' : 'email'}
                     id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 dark:focus:ring-cyan-400/20 focus:border-teal-500 dark:focus:border-cyan-400 transition-all duration-200 placeholder:text-gray-500 dark:placeholder:text-gray-400"
-                    placeholder={loginType === 'admin' ? 'admin@lablink.com' : loginType === 'hospital' ? 'hospital@lablink.com' : 'UHID or uhid@lablink.com'}
+                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-200"
+                    placeholder={loginType === 'admin' ? 'admin@healthtech.com' : loginType === 'hospital' ? 'hospital@example.com' : 'UHID or uhid@lablink.com'}
                     required
                     disabled={loading}
                   />
@@ -213,18 +207,18 @@ const LoginPage = () => {
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-800 dark:text-gray-200 mb-1.5">
+                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
                   Password
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
                     type="password"
                     id="password"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 dark:bg-gray-700/50 border border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 dark:focus:ring-cyan-400/20 focus:border-teal-500 dark:focus:border-cyan-400 transition-all duration-200 placeholder:text-gray-500 dark:placeholder:text-gray-400"
+                    className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-200"
                     placeholder={loginType === 'patient' ? 'Your mobile number' : '••••••••'}
                     required
                     disabled={loading}
@@ -236,14 +230,14 @@ const LoginPage = () => {
                 <label className="flex items-center cursor-pointer">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 text-teal-500 border-gray-300 dark:border-gray-600 rounded focus:ring-teal-500 focus:ring-offset-0"
+                    className="w-4 h-4 text-teal-500 border-gray-300 rounded focus:ring-teal-500 focus:ring-offset-0"
                     disabled={loading}
                   />
-                  <span className="ml-2 text-gray-700 dark:text-gray-300">Remember me</span>
+                  <span className="ml-2 text-gray-600">Remember me</span>
                 </label>
                 <button
                   type="button"
-                  className="text-teal-600 dark:text-cyan-400 hover:text-teal-700 dark:hover:text-cyan-300 font-medium transition-colors"
+                  className="text-teal-600 hover:text-teal-700 font-medium transition-colors"
                   disabled={loading}
                 >
                   Forgot password?
@@ -253,7 +247,7 @@ const LoginPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-teal-500 to-cyan-500 dark:from-teal-600 dark:to-cyan-600 text-white font-medium py-3 rounded-xl shadow-lg shadow-teal-500/25 dark:shadow-teal-500/15 hover:shadow-teal-500/40 dark:hover:shadow-teal-500/25 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center justify-center gap-2 text-sm"
+                className="w-full bg-gradient-to-r from-teal-500 to-cyan-500 text-white font-medium py-3 rounded-xl shadow-lg shadow-teal-500/25 hover:shadow-teal-500/40 transition-all duration-300 hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 flex items-center justify-center gap-2 text-sm"
               >
                 {loading ? (
                   <>
@@ -269,12 +263,12 @@ const LoginPage = () => {
               </button>
             </form>
 
-            <div className="mt-6 pt-6 border-t border-gray-100 dark:border-gray-700 text-center">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="mt-6 pt-6 border-t border-gray-100 text-center">
+              <p className="text-sm text-gray-500">
                 {loginType === 'admin' ? (
-                  <>Need access? <span className="text-teal-600 dark:text-cyan-400 font-medium">Contact administrator</span></>
+                  <>Need access? <span className="text-teal-600 font-medium">Contact administrator</span></>
                 ) : loginType === 'hospital' ? (
-                  <>New hospital? <Link to="/hospital/register" className="text-teal-600 dark:text-cyan-400 font-medium hover:text-teal-700 dark:hover:text-cyan-300">Register here</Link></>
+                  <>New hospital? <Link to="/hospital/register" className="text-teal-600 font-medium hover:text-teal-700">Register here</Link></>
                 ) : (
                   <>New patient? Registration is handled at the desk during your visit.</>
                 )}
@@ -284,8 +278,8 @@ const LoginPage = () => {
         </div>
 
         {/* Footer Text */}
-        <p className="text-center text-gray-600 dark:text-gray-400 text-xs mt-6">
-          © 2026 LabLink. Connecting Lives Through Smart Blood Bank Management.
+        <p className="text-center text-white/60 text-xs mt-6">
+          © 2024 HealthTech. Secure Healthcare Platform.
         </p>
       </div>
     </div>

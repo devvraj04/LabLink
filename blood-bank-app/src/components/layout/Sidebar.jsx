@@ -89,7 +89,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
             <div className="w-10 h-10 bg-white/20 backdrop-blur-lg rounded-xl flex items-center justify-center border border-white/20">
               <Heart className="h-5 w-5 text-white" />
             </div>
-            <span className="text-lg font-semibold">LabLink</span>
+            <span className="text-lg font-semibold">{isPatient ? 'LabLink' : 'HealthTech'}</span>
           </div>
 
           {/* Close button for mobile */}
@@ -139,7 +139,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
         </nav>
 
         <div className="p-5 border-t border-white/10">
-          <p className="text-xs text-white/50">© 2026 LabLink</p>
+          <p className="text-xs text-white/50">© 2024 HealthTech</p>
           <p className="text-xs text-white/30 mt-0.5">v2.0.0</p>
         </div>
       </div>

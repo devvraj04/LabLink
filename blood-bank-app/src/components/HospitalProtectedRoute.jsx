@@ -3,9 +3,9 @@ import { Navigate } from 'react-router-dom';
 import { useHospitalAuth } from '../context/HospitalAuthContext';
 
 const HospitalProtectedRoute = ({ children }) => {
-  const { hospital, hospitalLoading } = useHospitalAuth();
+  const { hospital, loading } = useHospitalAuth();
 
-  if (hospitalLoading) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
@@ -24,3 +24,4 @@ const HospitalProtectedRoute = ({ children }) => {
 };
 
 export default HospitalProtectedRoute;
+

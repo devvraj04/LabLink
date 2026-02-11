@@ -19,6 +19,18 @@ const HospitalLayout = () => {
         return 'Hospital Dashboard';
       case '/hospital/requests':
         return 'Blood Requests';
+      case '/hospital/inventory':
+        return 'Hospital Inventory';
+      case '/hospital/donors':
+        return 'Donors';
+      case '/hospital/recipients':
+        return 'Recipients';
+      case '/hospital/camps':
+        return 'Donation Camps';
+      case '/hospital/lab-technician':
+        return 'Lab Technician';
+      case '/hospital/sos':
+        return 'Emergency SOS';
       case '/hospital/chat':
         return 'Chat with Admin';
       default:

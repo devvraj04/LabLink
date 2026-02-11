@@ -234,8 +234,8 @@ export default function LabPatientPage() {
                         key={tab.id}
                         onClick={() => { setActiveTab(tab.id); if (tab.id === 'orders') fetchOrders(); }}
                         className={`px-4 py-2 text-sm font-medium rounded-lg transition-all ${activeTab === tab.id
-                                ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-md'
-                                : 'text-gray-600 hover:bg-gray-100'
+                            ? 'bg-gradient-to-r from-teal-500 to-cyan-500 text-white shadow-md'
+                            : 'text-gray-600 hover:bg-gray-100'
                             }`}
                     >{tab.label}</button>
                 ))}
@@ -439,6 +439,17 @@ export default function LabPatientPage() {
                                                 className="w-full py-2 rounded-lg border border-teal-500 text-teal-600 font-medium hover:bg-teal-50 transition-colors text-sm">
                                                 📊 View Results
                                             </button>
+                                        </div>
+                                    )}
+                                    {order.paymentRequired && (
+                                        <div className="pt-3 border-t border-gray-100">
+                                            <div className="w-full py-3 rounded-lg bg-amber-50 border border-amber-200 text-center">
+                                                <div className="flex items-center justify-center gap-2 text-amber-700 font-medium text-sm">
+                                                    <span>🔒</span>
+                                                    <span>Payment required to view results</span>
+                                                </div>
+                                                <p className="text-xs text-amber-500 mt-1">Please complete payment at the lab counter to access your report</p>
+                                            </div>
                                         </div>
                                     )}
                                 </div>

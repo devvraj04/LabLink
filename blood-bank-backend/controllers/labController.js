@@ -178,7 +178,18 @@ exports.getPatientOrders = async (req, res) => {
                     current: i === currentIdx,
                 })),
             };
-            order.canDownloadReport = order.status === 'completed' && !!order.resultData;
+
+            // Payment-gate: only allow result viewing if paid
+            if (order.status === 'completed' && !!order.resultData && order.isPaid) {
+                order.canDownloadReport = true;
+            } else {
+                order.canDownloadReport = false;
+                // Strip result data from unpaid completed orders so patient can't see it
+                if (order.status === 'completed' && !order.isPaid) {
+                    order.resultData = null;
+                    order.paymentRequired = true;
+                }
+            }
             return order;
         });
 
@@ -193,13 +204,39 @@ exports.getPatientOrders = async (req, res) => {
 // GET /api/lab/technician/requests - Get all lab requests for technician
 exports.getTechnicianRequests = async (req, res) => {
     try {
-        const { status } = req.query;
+        const { status, search } = req.query;
         const filter = { status: { $ne: 'cart' } };
         if (status && status !== 'all') filter.status = status;
 
-        const requests = await LabOrder.find(filter)
+        // If search query provided, add barcode / patientName / patientEmail filter
+        if (search && search.trim()) {
+            const q = search.trim();
+            filter.$or = [
+                { barcode: { $regex: q, $options: 'i' } },
+                { patientName: { $regex: q, $options: 'i' } },
+                { patientEmail: { $regex: q, $options: 'i' } },
+                { sessionId: { $regex: q, $options: 'i' } },
+            ];
+        }
+
+        let requests = await LabOrder.find(filter)
             .populate('testId')
             .sort({ priority: -1, createdAt: -1 });
+
+        // Also filter by test name if search is provided (post-populate)
+        if (search && search.trim()) {
+            const q = search.trim().toLowerCase();
+            requests = requests.filter((r) => {
+                const test = r.testId;
+                if (test && (test.name || '').toLowerCase().includes(q)) return true;
+                if (test && (test.code || '').toLowerCase().includes(q)) return true;
+                // Already matched by DB query
+                return (r.barcode || '').toLowerCase().includes(q) ||
+                    (r.patientName || '').toLowerCase().includes(q) ||
+                    (r.patientEmail || '').toLowerCase().includes(q) ||
+                    (r.sessionId || '').toLowerCase().includes(q);
+            });
+        }
 
         // Build stats
         const allOrders = await LabOrder.find({ status: { $ne: 'cart' } });
@@ -303,6 +340,46 @@ exports.submitResult = async (req, res) => {
         res.json({
             success: true,
             message: isCritical ? '⚠️ Critical result submitted!' : 'Result submitted successfully',
+            analysis: { isCritical: order.isCritical, hasAbnormal },
+        });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+};
+
+// PUT /api/lab/technician/results/:orderId - Update existing test results
+exports.updateResult = async (req, res) => {
+    try {
+        const { orderId } = req.params;
+        const { resultData, isCritical, resultedBy } = req.body;
+        const order = await LabOrder.findById(orderId).populate('testId');
+        if (!order) return res.status(404).json({ success: false, error: 'Order not found' });
+        if (order.status !== 'completed') {
+            return res.status(400).json({ success: false, error: 'Can only edit results for completed orders' });
+        }
+
+        // Check for abnormal values
+        let hasAbnormal = false;
+        if (order.testId && order.testId.resultFields) {
+            order.testId.resultFields.forEach((field) => {
+                if (field.fieldType === 'number' && field.normalMin != null && field.normalMax != null) {
+                    const val = parseFloat(resultData[field.fieldName]);
+                    if (!isNaN(val) && (val < field.normalMin || val > field.normalMax)) {
+                        hasAbnormal = true;
+                    }
+                }
+            });
+        }
+
+        order.resultData = resultData;
+        order.resultedAt = new Date();
+        order.resultedBy = resultedBy || 'Lab Technician';
+        order.isCritical = isCritical || hasAbnormal;
+        await order.save();
+
+        res.json({
+            success: true,
+            message: 'Result updated successfully',
             analysis: { isCritical: order.isCritical, hasAbnormal },
         });
     } catch (error) {

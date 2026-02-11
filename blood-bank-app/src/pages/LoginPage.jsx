@@ -40,7 +40,7 @@ const LoginPage = () => {
     try {
       if (loginType === 'admin') {
         const result = await adminLogin(formData.email, formData.password);
-        
+
         if (result.success) {
           success('Login successful', 'Welcome back to HealthTech');
           navigate('/app/dashboard');
@@ -50,7 +50,7 @@ const LoginPage = () => {
         }
       } else {
         const result = await hospitalLogin(formData);
-        
+
         if (result.success) {
           success('Login successful', 'Welcome to Hospital Portal');
           setTimeout(() => {
@@ -98,8 +98,8 @@ const LoginPage = () => {
       </div>
 
       {/* Back to Home Link */}
-      <Link 
-        to="/" 
+      <Link
+        to="/"
         className={`absolute top-6 left-6 flex items-center gap-2 text-white/80 hover:text-white transition-all duration-300 z-20 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
       >
         <ArrowLeft className="w-4 h-4" />
@@ -125,11 +125,10 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => switchLoginType('admin')}
-                className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-                  loginType === 'admin'
+                className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${loginType === 'admin'
                     ? 'bg-white text-teal-600 shadow-sm'
                     : 'text-gray-500 hover:text-gray-700'
-                }`}
+                  }`}
               >
                 <Shield className="w-4 h-4" />
                 Admin
@@ -137,11 +136,10 @@ const LoginPage = () => {
               <button
                 type="button"
                 onClick={() => switchLoginType('hospital')}
-                className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-                  loginType === 'hospital'
+                className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${loginType === 'hospital'
                     ? 'bg-white text-teal-600 shadow-sm'
                     : 'text-gray-500 hover:text-gray-700'
-                }`}
+                  }`}
               >
                 <Building2 className="w-4 h-4" />
                 Hospital
@@ -207,8 +205,8 @@ const LoginPage = () => {
                   />
                   <span className="ml-2 text-gray-600">Remember me</span>
                 </label>
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   className="text-teal-600 hover:text-teal-700 font-medium transition-colors"
                   disabled={loading}
                 >

@@ -35,6 +35,173 @@
   min-height: 100vh;
 }
 
+/* ========== Dark Mode Toggle Animation ========== */
+@keyframes dark-toggle-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.dark-toggle-icon {
+  animation: dark-toggle-rotate 0.5s ease;
+}
+
+/* ========== Dark Mode Variants ========== */
+/* ========== Dark Mode Variants ========== */
+.dark-mode {
+  background: linear-gradient(135deg,
+      #0f172a 0%,
+      #1e293b 15%,
+      #0f172a 30%,
+      #1e1b4b 50%,
+      #0f172a 70%,
+      #1e293b 85%,
+      #0f172a 100%) !important;
+  background-size: 400% 400% !important;
+  animation: gradient-shift 15s ease infinite !important;
+  color: #f1f5f9;
+}
+
+/* Dark Glass Cards */
+.dark-mode .glass-card {
+  background: rgba(30, 41, 59, 0.85);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .glass-card:hover {
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .glass-card-mini {
+  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Dark Mode Text Colors */
+.dark-mode .text-gray-800 {
+  color: #f1f5f9 !important;
+}
+
+.dark-mode .text-gray-700 {
+  color: #e2e8f0 !important;
+}
+
+.dark-mode .text-gray-600 {
+  color: #cbd5e1 !important;
+}
+
+.dark-mode .text-gray-500 {
+  color: #94a3b8 !important;
+}
+
+.dark-mode .text-gray-400 {
+  color: #64748b !important;
+}
+
+/* Dark Mode Backgrounds */
+.dark-mode .bg-gray-50 {
+  background-color: rgba(30, 41, 59, 0.6) !important;
+}
+
+.dark-mode .bg-gray-100 {
+  background-color: rgba(51, 65, 85, 0.6) !important;
+}
+
+.dark-mode .bg-white {
+  background-color: rgba(30, 41, 59, 0.9) !important;
+}
+
+.dark-mode .bg-red-50 {
+  background-color: rgba(127, 29, 29, 0.3) !important;
+}
+
+.dark-mode .bg-cyan-50 {
+  background-color: rgba(8, 51, 68, 0.3) !important;
+}
+
+.dark-mode .bg-emerald-50 {
+  background-color: rgba(6, 78, 59, 0.3) !important;
+}
+
+.dark-mode .bg-white\/5 {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark-mode .bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+/* Dark Mode Section Backgrounds */
+.dark-mode .bg-gradient-to-br.from-red-50,
+.dark-mode .bg-gradient-to-br.from-rose-50 {
+  background: linear-gradient(to bottom right, rgba(127, 29, 29, 0.2), rgba(136, 19, 55, 0.2)) !important;
+}
+
+.dark-mode .bg-gradient-to-r.from-teal-50 {
+  background: linear-gradient(to right, rgba(13, 148, 136, 0.15), rgba(6, 182, 212, 0.15)) !important;
+}
+
+.dark-mode .bg-gradient-to-br.from-green-50,
+.dark-mode .bg-gradient-to-br.from-emerald-50 {
+  background: linear-gradient(to bottom right, rgba(6, 78, 59, 0.2), rgba(4, 120, 87, 0.2)) !important;
+}
+
+.dark-mode .bg-gradient-to-br.from-amber-50 {
+  background: linear-gradient(to bottom right, rgba(120, 53, 15, 0.2), rgba(154, 52, 18, 0.2)) !important;
+}
+
+.dark-mode .bg-gradient-to-br.from-blue-50 {
+  background: linear-gradient(to bottom right, rgba(30, 58, 138, 0.2), rgba(49, 46, 129, 0.2)) !important;
+}
+
+/* Dark Mode Borders */
+.dark-mode .border-gray-100 {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark-mode .border-gray-200 {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-mode .border-white\/10 {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+.dark-mode .border-white\/20 {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Dark Mode Special Elements */
+.dark-mode .bg-emerald-500 {
+  background-color: #059669 !important;
+}
+
+.dark-mode select {
+  color: #e2e8f0;
+}
+
+.dark-mode .hover\:bg-white:hover {
+  background-color: rgba(51, 65, 85, 0.8) !important;
+}
+
+.dark-mode .hover\:bg-gray-200:hover {
+  background-color: rgba(51, 65, 85, 0.6) !important;
+}
+
 /* Login Glass Card */
 .login-glass-card {
   background: rgba(255, 255, 255, 0.95);

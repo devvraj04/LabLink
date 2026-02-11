@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
 
 // Animated counter hook
 const useCounter = (end, duration = 2000) => {
@@ -164,6 +165,7 @@ const upcomingActivities = [
 const LandingPage = () => {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
+  const { darkMode, toggleTheme } = useTheme();
   const livesSaved = useCounter(25000, 2500);
   const bloodUnitsCollected = useCounter(150000, 2500);
   const hospitalPartners = useCounter(350, 2000);
@@ -173,7 +175,7 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <div className="landing-page min-h-screen overflow-hidden">
+    <div className={`landing-page min-h-screen overflow-hidden transition-colors duration-500 ${darkMode ? 'dark-mode' : ''}`}>
       {/* Animated Background Elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-white/10 rounded-full blur-3xl animate-pulse-slow" />
@@ -212,6 +214,60 @@ const LandingPage = () => {
           </div>
 
           <div className="flex items-center gap-4">
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleTheme}
+              className="relative w-14 h-8 rounded-full transition-all duration-500 flex items-center px-1 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 focus:ring-offset-transparent"
+              style={{
+                background: darkMode
+                  ? 'linear-gradient(135deg, #1e1b4b, #312e81)'
+                  : 'linear-gradient(135deg, #38bdf8, #06b6d4)',
+                boxShadow: darkMode
+                  ? '0 0 15px rgba(99, 102, 241, 0.4), inset 0 1px 2px rgba(0,0,0,0.3)'
+                  : '0 0 15px rgba(56, 189, 248, 0.4), inset 0 1px 2px rgba(0,0,0,0.1)',
+              }}
+              title={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {/* Stars / Clouds decoration */}
+              <div className="absolute inset-0 overflow-hidden rounded-full">
+                {darkMode ? (
+                  <>
+                    <div className="absolute top-1.5 left-2 w-1 h-1 bg-white rounded-full opacity-80 animate-pulse" />
+                    <div className="absolute top-3 left-4 w-0.5 h-0.5 bg-white rounded-full opacity-60" />
+                    <div className="absolute bottom-2 left-3 w-0.5 h-0.5 bg-white rounded-full opacity-70 animate-pulse" style={{ animationDelay: '0.5s' }} />
+                  </>
+                ) : (
+                  <>
+                    <div className="absolute top-1 right-3 w-3 h-2 bg-white/30 rounded-full" />
+                    <div className="absolute bottom-1.5 right-5 w-2 h-1.5 bg-white/20 rounded-full" />
+                  </>
+                )}
+              </div>
+              {/* Toggle knob */}
+              <div
+                className="w-6 h-6 rounded-full shadow-lg flex items-center justify-center transition-all duration-500 transform"
+                style={{
+                  transform: darkMode ? 'translateX(24px)' : 'translateX(0px)',
+                  background: darkMode
+                    ? 'linear-gradient(135deg, #c7d2fe, #818cf8)'
+                    : 'linear-gradient(135deg, #fef3c7, #fbbf24)',
+                  boxShadow: darkMode
+                    ? '0 0 10px rgba(129, 140, 248, 0.6)'
+                    : '0 0 10px rgba(251, 191, 36, 0.6)',
+                }}
+              >
+                {darkMode ? (
+                  <svg className="w-3.5 h-3.5 text-indigo-900" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                  </svg>
+                ) : (
+                  <svg className="w-3.5 h-3.5 text-amber-700" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z" />
+                  </svg>
+                )}
+              </div>
+            </button>
+
             <button
               onClick={() => navigate('/login')}
               className="px-6 py-2.5 text-white/90 hover:text-white font-medium transition-all hover:bg-white/10 rounded-xl"

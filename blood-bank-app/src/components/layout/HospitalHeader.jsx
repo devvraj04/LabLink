@@ -67,8 +67,8 @@ const HospitalHeader = ({ title, toggleSidebar }) => {
             {/* Dropdown Menu */}
             {showDropdown && (
               <>
-                <div 
-                  className="fixed inset-0 z-[60]" 
+                <div
+                  className="fixed inset-0 z-[60]"
                   onClick={() => setShowDropdown(false)}
                 />
                 <div className="absolute right-0 top-full mt-2 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 py-2 z-[70]">
@@ -78,7 +78,7 @@ const HospitalHeader = ({ title, toggleSidebar }) => {
                     </p>
                     <p className="text-xs text-zinc-600 mt-1">Hospital Portal Access</p>
                   </div>
-                  
+
                   <div className="p-2">
                     <button
                       onClick={handleLogout}

@@ -283,7 +283,7 @@ const HospitalRegisterPage = () => {
         {/* Info Note */}
         <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
           <p className="text-sm text-cyan-800 text-center">
-            <strong>Note:</strong> Your account will be pending admin approval after registration. 
+            <strong>Note:</strong> Your account will be pending admin approval after registration.
             You'll be able to access the portal once approved.
           </p>
         </div>

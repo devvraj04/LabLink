@@ -14,7 +14,7 @@ export default function LabTechnicianPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [toast, setToast] = useState(null);
     const searchInputRef = useRef(null);
-    const [showScanner, setShowScanner] = useState(false);
+    const [openPaymentId, setOpenPaymentId] = useState(null);
     const html5QrCodeRef = useRef(null);
     const fileInputRef = useRef(null);
 
@@ -31,41 +31,7 @@ export default function LabTechnicianPage() {
         setTimeout(() => setToast(null), 3000);
     };
 
-    // Barcode scanner functions
-    const startScanner = () => {
-        setShowScanner(true);
-        setTimeout(() => {
-            const scannerId = 'barcode-scanner-region';
-            const el = document.getElementById(scannerId);
-            if (!el) return;
-            const html5QrCode = new Html5Qrcode(scannerId);
-            html5QrCodeRef.current = html5QrCode;
-            html5QrCode.start(
-                { facingMode: 'environment' },
-                { fps: 10, qrbox: { width: 300, height: 150 }, formatsToSupport: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] },
-                (decodedText) => {
-                    setSearchQuery(decodedText);
-                    showToast('Scanned!', `Barcode: ${decodedText}`);
-                    stopScanner();
-                },
-                () => { }
-            ).catch((err) => {
-                console.error('Scanner start error:', err);
-                showToast('Camera Error', 'Could not access camera. Check permissions.', 'error');
-                setShowScanner(false);
-            });
-        }, 300);
-    };
 
-    const stopScanner = () => {
-        if (html5QrCodeRef.current) {
-            html5QrCodeRef.current.stop().then(() => {
-                html5QrCodeRef.current.clear();
-                html5QrCodeRef.current = null;
-            }).catch(() => { });
-        }
-        setShowScanner(false);
-    };
 
     const handleFileUpload = async (e) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -325,22 +291,13 @@ export default function LabTechnicianPage() {
                                     >✕</button>
                                 )}
                             </div>
-                            <div className="flex gap-2">
-                                <button
-                                    onClick={() => fileInputRef.current?.click()}
-                                    className="px-4 py-2.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-700 text-sm font-medium hover:bg-teal-100 transition-colors flex items-center gap-1.5 whitespace-nowrap"
-                                    title="Upload barcode image"
-                                >
-                                    🖼️ Upload
-                                </button>
-                                <button
-                                    onClick={startScanner}
-                                    className="px-4 py-2.5 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-700 text-sm font-medium hover:bg-indigo-100 transition-colors flex items-center gap-1.5 whitespace-nowrap"
-                                    title="Open camera to scan barcode"
-                                >
-                                    📷 Scan
-                                </button>
-                            </div>
+                            <button
+                                onClick={() => fileInputRef.current?.click()}
+                                className="px-4 py-2.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-700 text-sm font-medium hover:bg-teal-100 transition-colors flex items-center gap-1.5 whitespace-nowrap"
+                                title="Upload barcode image"
+                            >
+                                🖼️ Upload
+                            </button>
                         </div>
                     </div>
 
@@ -359,7 +316,7 @@ export default function LabTechnicianPage() {
                             {requests.map((order) => {
                                 const test = order.LabTest || order.testId;
                                 return (
-                                    <div key={order._id} className="glass-card-mini p-4">
+                                    <div key={order._id} className={`glass-card-mini p-4 relative ${openPaymentId === order._id ? 'z-30' : 'z-0'}`}>
                                         {/* Safety Alerts */}
                                         {order.safetyAlerts && (order.safetyAlerts.hasAllergies || order.safetyAlerts.requiresMRISafetyCheck) && (
                                             <div className="mb-3 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-start gap-2">
@@ -427,18 +384,25 @@ export default function LabTechnicianPage() {
                                                 )}
                                                 {/* Payment */}
                                                 {!order.isPaid && order.status !== 'cancelled' && (
-                                                    <div className="relative group">
-                                                        <button className="px-3 py-1.5 rounded-lg bg-amber-500 text-white text-sm font-medium hover:bg-amber-600 transition-colors">
+                                                    <div className="relative">
+                                                        <button onClick={() => setOpenPaymentId(openPaymentId === order._id ? null : order._id)}
+                                                            className="px-3 py-1.5 rounded-lg bg-amber-500 text-white text-sm font-medium hover:bg-amber-600 transition-colors">
                                                             💰 Pay
                                                         </button>
-                                                        <div className="absolute right-0 top-full mt-1 bg-white shadow-xl rounded-xl p-2 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all z-20 min-w-[140px]">
-                                                            {['cash', 'card', 'upi', 'online'].map((mode) => (
-                                                                <button key={mode} onClick={() => handleRecordPayment(order._id, mode)}
-                                                                    className="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-gray-100 capitalize transition-colors">
-                                                                    {mode}
-                                                                </button>
-                                                            ))}
-                                                        </div>
+                                                        {openPaymentId === order._id && (
+                                                            <>
+                                                                <div className="fixed inset-0 z-40" onClick={() => setOpenPaymentId(null)} />
+                                                                <div className="absolute right-0 top-full mt-1 bg-white shadow-2xl rounded-xl p-2 z-50 min-w-[160px] border border-gray-100 animate-fade-in">
+                                                                    {['cash', 'card', 'upi', 'online'].map((mode) => (
+                                                                        <button key={mode} onClick={() => { handleRecordPayment(order._id, mode); setOpenPaymentId(null); }}
+                                                                            className="w-full text-left px-3 py-2.5 text-sm rounded-lg hover:bg-amber-50 capitalize transition-colors flex items-center gap-2">
+                                                                            <span>{mode === 'cash' ? '💵' : mode === 'card' ? '💳' : mode === 'upi' ? '📱' : '🌐'}</span>
+                                                                            {mode}
+                                                                        </button>
+                                                                    ))}
+                                                                </div>
+                                                            </>
+                                                        )}
                                                     </div>
                                                 )}
                                                 {order.isPaid && (

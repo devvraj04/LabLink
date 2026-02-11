@@ -184,15 +184,15 @@ const LandingPage = () => {
       <nav className={`relative z-50 px-6 py-4 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-10'}`}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-white/30 to-white/10 backdrop-blur-lg flex items-center justify-center border border-white/20 shadow-lg">
-              <svg className="w-7 h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 shadow-lg shadow-teal-900/10">
+              <svg className="w-7 h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M5 14.5l-.94.94a1.5 1.5 0 000 2.12l.88.88a1.5 1.5 0 001.06.44H18a1.5 1.5 0 001.06-.44l.88-.88a1.5 1.5 0 000-2.12L19 14.5M5 14.5h14" />
                 <circle cx="10" cy="17" r="0.75" fill="currentColor" />
                 <circle cx="14" cy="16.5" r="0.75" fill="currentColor" />
                 <circle cx="12" cy="18" r="0.75" fill="currentColor" />
               </svg>
             </div>
-            <span className="text-2xl font-bold text-white tracking-tight">LabLink</span>
+            <span className="text-2xl font-bold text-white tracking-tight font-display">LabLink</span>
           </div>
 
           <div className="hidden md:flex items-center gap-8">
@@ -210,7 +210,7 @@ const LandingPage = () => {
             </button>
             <button
               onClick={() => navigate('/login')}
-              className="btn-glow px-6 py-2.5 bg-white text-teal-600 font-semibold rounded-xl hover:shadow-2xl hover:shadow-white/25 transition-all duration-300 hover:-translate-y-0.5"
+              className="px-6 py-2.5 bg-white text-teal-800 font-bold rounded-xl shadow-[0_4px_14px_0_rgba(0,0,0,0.1)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.23)] hover:bg-teal-50 transition-all duration-300 transform hover:-translate-y-0.5"
             >
               Get Started
             </button>
@@ -229,14 +229,14 @@ const LandingPage = () => {
                 <span className="text-white/90 text-sm font-medium">Saving 25,000+ lives through blood donation</span>
               </div>
 
-              <h1 className="text-5xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-5xl lg:text-7xl font-extrabold text-white mb-6 leading-tight tracking-tight">
                 Advanced Lab{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-white to-teal-200 animate-gradient-text">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-200 via-white to-cyan-200">
                   Management System
                 </span>
               </h1>
 
-              <p className="text-xl text-white/80 mb-10 max-w-xl leading-relaxed">
+              <p className="text-xl text-teal-50/90 mb-10 max-w-xl leading-relaxed font-light">
                 Revolutionize blood donation with real-time inventory tracking,
                 seamless hospital coordination, and life-saving emergency response—all in one powerful platform.
               </p>
@@ -244,7 +244,7 @@ const LandingPage = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                 <button
                   onClick={() => navigate('/login')}
-                  className="group relative px-8 py-4 bg-white text-teal-600 font-bold text-lg rounded-2xl shadow-2xl shadow-white/25 hover:shadow-white/40 transition-all duration-300 hover:-translate-y-1 hover:scale-105 overflow-hidden"
+                  className="group relative px-8 py-4 bg-white text-teal-900 font-bold text-lg rounded-2xl shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] transition-all duration-300 hover:-translate-y-1 hover:scale-105 overflow-hidden"
                 >
                   <span className="relative z-10 flex items-center justify-center gap-2">
                     Get Started Free
@@ -252,7 +252,7 @@ const LandingPage = () => {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
                   </span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-cyan-100 to-teal-100 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-teal-50 to-cyan-50 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </button>
 
                 <button className="group px-8 py-4 bg-white/10 backdrop-blur-lg text-white font-bold text-lg rounded-2xl border border-white/20 hover:bg-white/20 hover:border-white/40 transition-all duration-300 hover:-translate-y-1 flex items-center justify-center gap-3">
@@ -321,17 +321,17 @@ const LandingPage = () => {
                   </div>
 
                   <div className="grid grid-cols-3 gap-4 mt-6">
-                    <div className="text-center p-3 bg-red-50 rounded-xl">
-                      <div className="text-lg font-bold text-red-600">245</div>
-                      <div className="text-xs text-gray-500">O+ Units</div>
+                    <div className="text-center p-3 bg-white/50 backdrop-blur-sm border border-white/40 rounded-xl">
+                      <div className="text-lg font-bold text-rose-600">245</div>
+                      <div className="text-xs text-gray-500 font-medium">O+ Units</div>
                     </div>
-                    <div className="text-center p-3 bg-cyan-50 rounded-xl">
+                    <div className="text-center p-3 bg-white/50 backdrop-blur-sm border border-white/40 rounded-xl">
                       <div className="text-lg font-bold text-cyan-600">189</div>
-                      <div className="text-xs text-gray-500">A+ Units</div>
+                      <div className="text-xs text-gray-500 font-medium">A+ Units</div>
                     </div>
-                    <div className="text-center p-3 bg-emerald-50 rounded-xl">
+                    <div className="text-center p-3 bg-white/50 backdrop-blur-sm border border-white/40 rounded-xl">
                       <div className="text-lg font-bold text-emerald-600">98%</div>
-                      <div className="text-xs text-gray-500">Fulfilled</div>
+                      <div className="text-xs text-gray-500 font-medium">Fulfilled</div>
                     </div>
                   </div>
                 </GlassCard>
@@ -391,10 +391,10 @@ const LandingPage = () => {
                 <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300 text-white`}>
                   <feature.icon />
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3 group-hover:text-teal-600 transition-colors">
+                <h3 className="text-xl font-bold text-teal-900 mb-3 group-hover:text-teal-700 transition-colors">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-slate-600 leading-relaxed font-medium">
                   {feature.description}
                 </p>
                 <div className="mt-6 flex items-center text-teal-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
@@ -437,16 +437,16 @@ const LandingPage = () => {
 
                 <div className="grid sm:grid-cols-2 gap-4">
                   {bloodStats.map((stat, index) => (
-                    <div key={index} className="bg-gray-50 rounded-2xl p-5 hover:bg-white hover:shadow-lg transition-all duration-300 group">
+                    <div key={index} className="bg-white/50 backdrop-blur-sm border border-white/60 rounded-2xl p-5 hover:bg-white hover:shadow-lg hover:shadow-teal-900/5 transition-all duration-300 group">
                       <div className="flex justify-between items-start mb-3">
-                        <span className="text-gray-500 text-sm font-medium">{stat.label}</span>
-                        <span className={`text-xs font-medium px-2 py-1 rounded-full bg-emerald-100 ${stat.color}`}>
+                        <span className="text-slate-500 text-sm font-semibold">{stat.label}</span>
+                        <span className={`text-xs font-bold px-2 py-1 rounded-full bg-white border border-gray-100 ${stat.color}`}>
                           {stat.trend}
                         </span>
                       </div>
                       <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold text-gray-800 group-hover:text-teal-600 transition-colors">{stat.value}</span>
-                        <span className="text-gray-400 text-sm">{stat.unit}</span>
+                        <span className="text-3xl font-bold text-slate-800 group-hover:text-teal-700 transition-colors">{stat.value}</span>
+                        <span className="text-slate-400 text-sm font-medium">{stat.unit}</span>
                       </div>
                     </div>
                   ))}

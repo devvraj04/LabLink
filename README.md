@@ -264,6 +264,9 @@ node seedHospitalCredentials.js
       <td><img src="images/Blood_Inventory.png" alt="Inventory"></td>
     </tr>
     <tr>
+      <td colspan="2" align="center"><b>✨ New: Animated Landing Page with Video Background</b></td>
+    </tr>
+    <tr>
       <td><b>🤝 Donor Management</b></td>
       <td><b>🏥 Hospital Network</b></td>
     </tr>

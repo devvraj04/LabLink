@@ -117,7 +117,7 @@ export default function PatientDashboard() {
 
         w.document.write(`<!DOCTYPE html><html><head><title>Lab Report - ${test?.name || 'Test'}</title>
         <style>body{font-family:Arial,sans-serif;margin:20px;color:#333}.header{text-align:center;border-bottom:3px solid #0d9488;padding-bottom:15px;margin-bottom:20px}.header h1{color:#0d9488;margin:0}.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;padding:15px;background:#f0fdfa;border-radius:8px}.info-item{font-size:14px}.info-item strong{color:#0d9488}table{width:100%;border-collapse:collapse;margin-bottom:20px}th{background:#0d9488;color:white;padding:10px;text-align:left;border:1px solid #0d9488}.footer{text-align:center;margin-top:30px;padding-top:15px;border-top:1px solid #ddd;font-size:12px;color:#999}@media print{body{margin:0}.no-print{display:none}}</style></head><body>
-        <div class="header"><h1>🔬 Lab Report</h1><p>HealthTech Labs — Diagnostic Excellence</p></div>
+        <div class="header"><h1>🔬 Lab Report</h1><p>LabLink Labs — Diagnostic Excellence</p></div>
         <div class="info-grid">
             <div class="info-item"><strong>Patient:</strong> ${patient?.name || order.patientName || 'N/A'}</div>
             <div class="info-item"><strong>UHID:</strong> ${patient?.uhid || 'N/A'}</div>

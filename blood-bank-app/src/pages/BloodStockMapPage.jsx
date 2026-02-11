@@ -42,6 +42,7 @@ const BloodStockMapPage = () => {
   const [lastUpdated, setLastUpdated] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
   const [locationLoading, setLocationLoading] = useState(false);
+  const [isFallbackLocation, setIsFallbackLocation] = useState(false);
 
   const bloodGroupOptions = Object.keys(BLOOD_GROUP_CODES);
 
@@ -57,6 +58,10 @@ const BloodStockMapPage = () => {
     try {
       const location = await getCurrentLocation();
       setUserLocation(location);
+      setIsFallbackLocation(location.isFallback || false);
+      if (location.isFallback) {
+        console.log('Using fallback location (Mumbai)');
+      }
       // Auto-search once we have location
       searchBloodStock(location.latitude, location.longitude);
     } catch (err) {
@@ -125,6 +130,12 @@ const BloodStockMapPage = () => {
                 Live Blood Stock Map
               </h1>
               <p className="text-sm text-gray-500">Find nearby blood banks and check real-time stock availability</p>
+              {isFallbackLocation && (
+                <p className="text-xs text-amber-600 mt-2 flex items-center gap-1">
+                  <AlertCircle className="h-3.5 w-3.5" />
+                  Showing results for Mumbai. Enable location access for more accurate results.
+                </p>
+              )}
             </div>
             <div className="flex items-center gap-3">
               {lastUpdated && (

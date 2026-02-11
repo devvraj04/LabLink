@@ -8,7 +8,7 @@ export const labAPI = {
 
     // Patient Cart & Orders
     addToCart: (data) => API.post('/lab/orders/add-to-cart', data),
-    getCart: (sessionId) => API.get('/lab/orders/cart', { params: { sessionId } }),
+    getCart: (sessionId, userId) => API.get('/lab/orders/cart', { params: { sessionId, userId } }),
     removeFromCart: (orderId) => API.delete(`/lab/orders/cart/${orderId}`),
     checkout: (data) => API.post('/lab/orders/checkout', data),
     getOrders: (params) => API.get('/lab/orders', { params }),

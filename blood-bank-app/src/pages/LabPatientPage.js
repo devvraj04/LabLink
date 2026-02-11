@@ -26,13 +26,27 @@ export default function LabPatientPage() {
     const [selectedResult, setSelectedResult] = useState(null);
     const [toast, setToast] = useState(null);
 
-    // Checkout form
-    const [patientName, setPatientName] = useState(localStorage.getItem('labPatientName') || '');
-    const [patientEmail, setPatientEmail] = useState(localStorage.getItem('labPatientEmail') || '');
-    const [patientPhone, setPatientPhone] = useState('');
+    // Detect logged-in patient
+    const storedUser = (() => { try { return JSON.parse(localStorage.getItem('user')); } catch { return null; } })();
+    const storedPatient = (() => { try { return JSON.parse(localStorage.getItem('patient')); } catch { return null; } })();
+    const isLoggedIn = !!(storedUser && storedUser.role === 'patient');
+    const loggedInUserId = storedUser?.id || null;
+
+    // Checkout form — auto-fill from patient profile if logged in
+    const [patientName, setPatientName] = useState(
+        isLoggedIn ? (storedPatient?.name || storedUser?.name || '') : (localStorage.getItem('labPatientName') || '')
+    );
+    const [patientEmail, setPatientEmail] = useState(
+        isLoggedIn ? (storedPatient?.email || storedUser?.email || '') : (localStorage.getItem('labPatientEmail') || '')
+    );
+    const [patientPhone, setPatientPhone] = useState(
+        isLoggedIn ? (storedPatient?.contact || '') : ''
+    );
     const [prescriptionUrl, setPrescriptionUrl] = useState('');
     const [hasAllergies, setHasAllergies] = useState(false);
-    const [allergyNotes, setAllergyNotes] = useState('');
+    const [allergyNotes, setAllergyNotes] = useState(
+        isLoggedIn ? (storedPatient?.allergies || '') : ''
+    );
     const [hasImplants, setHasImplants] = useState(false);
     const [implantDetails, setImplantDetails] = useState('');
     const [checkoutLoading, setCheckoutLoading] = useState(false);
@@ -65,21 +79,21 @@ export default function LabPatientPage() {
 
     const fetchCart = useCallback(async () => {
         try {
-            const res = await labAPI.getCart(sessionId);
+            const res = await labAPI.getCart(sessionId, loggedInUserId);
             setCart(res.data.data || []);
         } catch (err) {
             console.error('Error fetching cart:', err);
         }
-    }, [sessionId]);
+    }, [sessionId, loggedInUserId]);
 
     const fetchOrders = useCallback(async () => {
         try {
-            const res = await labAPI.getOrders({ sessionId });
+            const res = await labAPI.getOrders({ sessionId, userId: loggedInUserId });
             setOrders(res.data.data || []);
         } catch (err) {
             console.error('Error fetching orders:', err);
         }
-    }, [sessionId]);
+    }, [sessionId, loggedInUserId]);
 
     useEffect(() => { fetchTests(); }, [fetchTests]);
     useEffect(() => { fetchCart(); fetchOrders(); }, [fetchCart, fetchOrders]);
@@ -91,7 +105,7 @@ export default function LabPatientPage() {
 
     const addToCart = async (testId) => {
         try {
-            await labAPI.addToCart({ testId, sessionId, patientName, patientEmail });
+            await labAPI.addToCart({ testId, sessionId, userId: loggedInUserId, patientName, patientEmail });
             showToast('Added', 'Test added to cart');
             fetchCart();
         } catch (err) {
@@ -119,7 +133,7 @@ export default function LabPatientPage() {
         localStorage.setItem('labPatientEmail', patientEmail);
         try {
             await labAPI.checkout({
-                sessionId, patientName, patientEmail, patientPhone,
+                sessionId, userId: loggedInUserId, patientName, patientEmail, patientPhone,
                 prescriptionUrl: prescriptionUrl || undefined,
                 hasAllergies, allergyNotes: hasAllergies ? allergyNotes : undefined,
                 hasImplants, implantDetails: hasImplants ? implantDetails : undefined,

@@ -53,7 +53,7 @@ exports.createTest = async (req, res) => {
 // POST /api/lab/orders/add-to-cart - Add test to cart
 exports.addToCart = async (req, res) => {
     try {
-        const { testId, sessionId, patientName, patientEmail, patientPhone, patientAge, patientGender } = req.body;
+        const { testId, sessionId, userId, patientName, patientEmail, patientPhone, patientAge, patientGender } = req.body;
         if (!testId || !sessionId) {
             return res.status(400).json({ success: false, error: 'testId and sessionId are required' });
         }
@@ -61,13 +61,17 @@ exports.addToCart = async (req, res) => {
         const test = await LabTest.findById(testId);
         if (!test) return res.status(404).json({ success: false, error: 'Test not found' });
 
-        // Check if already in cart
-        const existing = await LabOrder.findOne({ testId, sessionId, status: 'cart' });
+        // Check if already in cart (by sessionId or userId)
+        const cartQuery = { testId, status: 'cart' };
+        if (userId) cartQuery.$or = [{ sessionId }, { userId }];
+        else cartQuery.sessionId = sessionId;
+        const existing = await LabOrder.findOne(cartQuery);
         if (existing) return res.status(400).json({ success: false, error: 'Test already in cart' });
 
         const order = await LabOrder.create({
             testId,
             sessionId,
+            userId: userId || null,
             patientName: patientName || 'Walk-in Patient',
             patientEmail,
             patientPhone,
@@ -87,10 +91,14 @@ exports.addToCart = async (req, res) => {
 // GET /api/lab/orders/cart - Get cart items
 exports.getCart = async (req, res) => {
     try {
-        const { sessionId } = req.query;
-        if (!sessionId) return res.status(400).json({ success: false, error: 'sessionId is required' });
+        const { sessionId, userId } = req.query;
+        if (!sessionId && !userId) return res.status(400).json({ success: false, error: 'sessionId or userId is required' });
 
-        const items = await LabOrder.find({ sessionId, status: 'cart' })
+        const cartQuery = { status: 'cart' };
+        if (userId) cartQuery.$or = [{ userId }, ...(sessionId ? [{ sessionId }] : [])];
+        else cartQuery.sessionId = sessionId;
+
+        const items = await LabOrder.find(cartQuery)
             .populate('testId')
             .sort({ createdAt: -1 });
 
@@ -115,20 +123,26 @@ exports.removeFromCart = async (req, res) => {
 // POST /api/lab/orders/checkout - Checkout cart (submit orders)
 exports.checkout = async (req, res) => {
     try {
-        const { sessionId, patientName, patientEmail, patientPhone, patientAge, patientGender,
+        const { sessionId, userId, patientName, patientEmail, patientPhone, patientAge, patientGender,
             prescriptionUrl, hasAllergies, allergyNotes, hasImplants, implantDetails } = req.body;
 
-        if (!sessionId) return res.status(400).json({ success: false, error: 'sessionId is required' });
+        if (!sessionId && !userId) return res.status(400).json({ success: false, error: 'sessionId or userId is required' });
 
-        const cartItems = await LabOrder.find({ sessionId, status: 'cart' });
+        const cartQuery = { status: 'cart' };
+        if (userId) cartQuery.$or = [{ userId }, ...(sessionId ? [{ sessionId }] : [])];
+        else cartQuery.sessionId = sessionId;
+
+        const cartItems = await LabOrder.find(cartQuery);
         if (cartItems.length === 0) return res.status(400).json({ success: false, error: 'Cart is empty' });
 
         // Update all cart items to pending
+        const updateFilter = { _id: { $in: cartItems.map(i => i._id) } };
         await LabOrder.updateMany(
-            { sessionId, status: 'cart' },
+            updateFilter,
             {
                 $set: {
                     status: 'pending',
+                    userId: userId || cartItems[0].userId || null,
                     patientName: patientName || cartItems[0].patientName,
                     patientEmail: patientEmail || cartItems[0].patientEmail,
                     patientPhone: patientPhone || cartItems[0].patientPhone,
@@ -152,11 +166,21 @@ exports.checkout = async (req, res) => {
 // GET /api/lab/orders - Get orders for a patient (by sessionId or email)
 exports.getPatientOrders = async (req, res) => {
     try {
-        const { sessionId, email } = req.query;
+        const { sessionId, email, userId } = req.query;
         const filter = { status: { $ne: 'cart' } };
-        if (sessionId) filter.sessionId = sessionId;
-        else if (email) filter.patientEmail = email;
-        else return res.status(400).json({ success: false, error: 'sessionId or email required' });
+
+        if (userId) {
+            // Logged-in patient: find by userId OR matching sessionId
+            const orConditions = [{ userId }];
+            if (sessionId) orConditions.push({ sessionId });
+            filter.$or = orConditions;
+        } else if (sessionId) {
+            filter.sessionId = sessionId;
+        } else if (email) {
+            filter.patientEmail = email;
+        } else {
+            return res.status(400).json({ success: false, error: 'sessionId, userId, or email required' });
+        }
 
         const orders = await LabOrder.find(filter)
             .populate('testId')

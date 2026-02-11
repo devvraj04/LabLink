@@ -3,7 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useHospitalAuth } from '../context/HospitalAuthContext';
 import { useToast } from '../context/ToastContext';
-import { Mail, Lock, LogIn, Loader2, Building2, Shield, Heart, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, LogIn, Loader2, Building2, Shield, Heart, ArrowLeft, UserCheck } from 'lucide-react';
+import { patientAPI } from '../services/patientService';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const LoginPage = () => {
           setError(result.error || 'Login failed. Please try again.');
           showError('Login failed', result.error || 'Invalid email or password');
         }
-      } else {
+      } else if (loginType === 'hospital') {
         const result = await hospitalLogin(formData);
 
         if (result.success) {
@@ -64,10 +65,28 @@ const LoginPage = () => {
             showError('Login failed', result.message || 'Invalid email or password');
           }
         }
+      } else if (loginType === 'patient') {
+        // Patient login via UHID/mobile
+        const result = await patientAPI.login(formData);
+
+        if (result.data.success) {
+          // Store token and user
+          localStorage.setItem('token', result.data.data.token);
+          localStorage.setItem('user', JSON.stringify(result.data.data.user));
+          if (result.data.data.patient) {
+            localStorage.setItem('patient', JSON.stringify(result.data.data.patient));
+          }
+          success('Login successful', `Welcome, ${result.data.data.user.name}`);
+          navigate('/app/lab-patient');
+        } else {
+          setError(result.data.message || 'Login failed. Please try again.');
+          showError('Login failed', result.data.message || 'Invalid UHID or password');
+        }
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
-      showError('Login error', 'An unexpected error occurred. Please try again.');
+      const errorMsg = err.response?.data?.message || 'An unexpected error occurred. Please try again.';
+      setError(errorMsg);
+      showError('Login error', errorMsg);
     } finally {
       setLoading(false);
     }
@@ -126,8 +145,8 @@ const LoginPage = () => {
                 type="button"
                 onClick={() => switchLoginType('admin')}
                 className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${loginType === 'admin'
-                    ? 'bg-white text-teal-600 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-white text-teal-600 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
                   }`}
               >
                 <Shield className="w-4 h-4" />
@@ -137,12 +156,23 @@ const LoginPage = () => {
                 type="button"
                 onClick={() => switchLoginType('hospital')}
                 className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${loginType === 'hospital'
-                    ? 'bg-white text-teal-600 shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-white text-teal-600 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
                   }`}
               >
                 <Building2 className="w-4 h-4" />
                 Hospital
+              </button>
+              <button
+                type="button"
+                onClick={() => switchLoginType('patient')}
+                className={`flex-1 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${loginType === 'patient'
+                  ? 'bg-white text-teal-600 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-700'
+                  }`}
+              >
+                <UserCheck className="w-4 h-4" />
+                Patient
               </button>
             </div>
           </div>
@@ -158,18 +188,18 @@ const LoginPage = () => {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1.5">
-                  Email Address
+                  {loginType === 'patient' ? 'UHID / Email' : 'Email Address'}
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
-                    type="email"
+                    type={loginType === 'patient' ? 'text' : 'email'}
                     id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
                     className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-200"
-                    placeholder={loginType === 'admin' ? 'admin@healthtech.com' : 'hospital@example.com'}
+                    placeholder={loginType === 'admin' ? 'admin@healthtech.com' : loginType === 'hospital' ? 'hospital@example.com' : 'UHID or uhid@lablink.com'}
                     required
                     disabled={loading}
                   />
@@ -189,7 +219,7 @@ const LoginPage = () => {
                     value={formData.password}
                     onChange={handleChange}
                     className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500/20 focus:border-teal-500 transition-all duration-200"
-                    placeholder="••••••••"
+                    placeholder={loginType === 'patient' ? 'Your mobile number' : '••••••••'}
                     required
                     disabled={loading}
                   />
@@ -237,8 +267,10 @@ const LoginPage = () => {
               <p className="text-sm text-gray-500">
                 {loginType === 'admin' ? (
                   <>Need access? <span className="text-teal-600 font-medium">Contact administrator</span></>
-                ) : (
+                ) : loginType === 'hospital' ? (
                   <>New hospital? <Link to="/hospital/register" className="text-teal-600 font-medium hover:text-teal-700">Register here</Link></>
+                ) : (
+                  <>New patient? Registration is handled at the desk during your visit.</>
                 )}
               </p>
             </div>
